@@ -9,53 +9,53 @@ import java.util.Objects;
 @Entity
 public class Cliente {
 
-    private String nombre;
-    private String p_apellido;
-    private String s_apellido;
+    private String nombres;
+    private String primerApellido;
+    private String segundoApellido;
     private String direccion;
 
     @Id
     private String curp;
-    private Date fecha_nacimiento;
+    private Date fechaNacimiento;
 
     // constructor vacio
     public Cliente() {
     }
 
     // constructor con parametros
-    public Cliente(String nombre, String p_apellido, String s_apellido, String direccon, String curp, Date fecha_nacimiento) {
-        this.nombre = nombre;
-        this.p_apellido = p_apellido;
-        this.s_apellido = s_apellido;
-        this.direccion = direccon;
+    public Cliente(String nombres, String primerApellido, String segundoApellido, String direccion, String curp, Date fechaNacimiento) {
+        this.nombres = nombres;
+        this.primerApellido = primerApellido;
+        this.segundoApellido = segundoApellido;
+        this.direccion = direccion;
         this.curp = curp;
-        this.fecha_nacimiento = fecha_nacimiento;
+        this.fechaNacimiento = fechaNacimiento;
     }
 
     // getters y setters
 
-    public String getNombre() {
-        return nombre;
+    public String getNombres() {
+        return nombres;
     }
 
-    public void setNombre(String nombre) {
-        this.nombre = nombre;
+    public void setNombres(String nombre) {
+        this.nombres = nombre;
     }
 
-    public String getP_apellido() {
-        return p_apellido;
+    public String getPrimerApellido() {
+        return primerApellido;
     }
 
-    public void setP_apellido(String p_apellido) {
-        this.p_apellido = p_apellido;
+    public void setPrimerApellido(String pApellido) {
+        this.primerApellido = pApellido;
     }
 
-    public String getS_apellido() {
-        return s_apellido;
+    public String getSegundoApellido() {
+        return segundoApellido;
     }
 
-    public void setS_apellido(String s_apellido) {
-        this.s_apellido = s_apellido;
+    public void setSegundoApellido(String sApellido) {
+        this.segundoApellido = sApellido;
     }
 
     public String getDireccion() {
@@ -74,12 +74,12 @@ public class Cliente {
         this.curp = curp;
     }
 
-    public Date getFecha_nacimiento() {
-        return fecha_nacimiento;
+    public Date getFechaNacimiento() {
+        return fechaNacimiento;
     }
 
-    public void setFecha_nacimiento(Date fecha_nacimiento) {
-        this.fecha_nacimiento = fecha_nacimiento;
+    public void setFechaNacimiento(Date fechaNacimiento) {
+        this.fechaNacimiento = fechaNacimiento;
     }
     @Override
     public boolean equals(Object o){
@@ -87,11 +87,11 @@ public class Cliente {
             return true;
         } else if (o instanceof Cliente) {
             Cliente otroCliente = (Cliente) o;
-                return Objects.equals(curp, otroCliente.curp);
-            } else {
-                return false;
-            }//comprueba equivalencia
-        }//equals
+            return Objects.equals(curp, otroCliente.curp);
+        } else {
+            return false;
+        }//comprueba equivalencia
+    }//equals
 
     @Override
     public  int hashCode(){ //hace hashcode con el codigo de la curp internamente
@@ -100,7 +100,6 @@ public class Cliente {
 
     @Override
     public String toString() {
-        return String.format("Cliente(%s, %s, %s, %s, %s, %s)", nombre,p_apellido,s_apellido,direccion,curp,fecha_nacimiento);
+        return String.format("Cliente(%s, %s, %s, %s, %s, %s)", nombres, primerApellido, segundoApellido,direccion,curp, fechaNacimiento);
     }
 }
-

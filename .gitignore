@@ -1,0 +1,12 @@
+# Archivos de configuración
+application.properties
+application.yml
+.env
+
+# Archivos específicos de IntelliJ IDEA
+.idea/
+*.iml
+
+# Archivos de sistema
+.DS_Store
+Thumbs.db

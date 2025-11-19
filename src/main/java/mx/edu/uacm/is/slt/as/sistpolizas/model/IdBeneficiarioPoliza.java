@@ -9,11 +9,11 @@ import java.util.UUID;
 
 @Embeddable
 public class IdBeneficiarioPoliza implements Serializable {
-    private String nombre;
-    private String p_apellido;
-    private String s_apellido;
-    private Date fecha_nacimiento;
-    private UUID idpoliza;
+    private String nombres;
+    private String primerApellido;
+    private String segundoApellido;
+    private Date fechaNacimiento;
+    private UUID clavePoliza;
 
     private static final long serialVersionid = 52711849321L;
 
@@ -21,52 +21,52 @@ public class IdBeneficiarioPoliza implements Serializable {
 
     }
 
-    public IdBeneficiarioPoliza(String nombre, String p_apellido, String s_apellido, Date fecha_nacimiento, UUID idpoliza) {
-        this.nombre = nombre;
-        this.p_apellido = p_apellido;
-        this.s_apellido = s_apellido;
-        this.fecha_nacimiento = fecha_nacimiento;
-        this.idpoliza = idpoliza;
+    public IdBeneficiarioPoliza(String nombre, String primerApellido, String sApellido, Date fechaNacimiento, UUID idpoliza) {
+        this.nombres = nombre;
+        this.primerApellido = primerApellido;
+        this.segundoApellido = sApellido;
+        this.fechaNacimiento = fechaNacimiento;
+        this.clavePoliza = idpoliza;
     }
 
-    public String getNombre() {
-        return nombre;
+    public String getNombres() {
+        return nombres;
     }
 
-    public void setNombre(String nombre) {
-        this.nombre = nombre;
+    public void setNombres(String nombres) {
+        this.nombres = nombres;
     }
 
-    public String getP_apellido() {
-        return p_apellido;
+    public String getPApellido() {
+        return primerApellido;
     }
 
-    public void setP_apellido(String p_apellido) {
-        this.p_apellido = p_apellido;
+    public void setPApellido(String pApellido) {
+        this.primerApellido = pApellido;
     }
 
-    public String getS_apellido() {
-        return s_apellido;
+    public String getSApellido() {
+        return segundoApellido;
     }
 
-    public void setS_apellido(String s_apellido) {
-        this.s_apellido = s_apellido;
+    public void setSApellido(String sApellido) {
+        this.segundoApellido = sApellido;
     }
 
-    public Date getFecha_nacimiento() {
-        return fecha_nacimiento;
+    public Date getFechaNacimiento() {
+        return fechaNacimiento;
     }
 
-    public void setFecha_nacimiento(Date fecha_nacimiento) {
-        this.fecha_nacimiento = fecha_nacimiento;
+    public void setFechaNacimiento(Date fechaNacimiento) {
+        this.fechaNacimiento = fechaNacimiento;
     }
 
-    public UUID getIdpoliza() {
-        return idpoliza;
+    public UUID getClavePoliza() {
+        return clavePoliza;
     }
 
-    public void setIdpoliza(UUID idpoliza) {
-        this.idpoliza = idpoliza;
+    public void setClavePoliza(UUID idpoliza) {
+        this.clavePoliza = idpoliza;
     }
 
     @Override
@@ -75,26 +75,26 @@ public class IdBeneficiarioPoliza implements Serializable {
             return true;
         } else if (o instanceof IdBeneficiarioPoliza) {
             IdBeneficiarioPoliza otroIdBeneficiario = (IdBeneficiarioPoliza) o;
-            return Objects.equals(nombre, otroIdBeneficiario.nombre) &&
-                    Objects.equals(p_apellido,
-                            otroIdBeneficiario.p_apellido) &&
-                    Objects.equals(s_apellido,
-                            otroIdBeneficiario.s_apellido) &&
-                    Objects.equals(fecha_nacimiento,
-                            otroIdBeneficiario.fecha_nacimiento) &&
-                    Objects.equals(idpoliza, otroIdBeneficiario.idpoliza);
+            return Objects.equals(nombres, otroIdBeneficiario.nombres) &&
+                    Objects.equals(primerApellido,
+                            otroIdBeneficiario.primerApellido) &&
+                    Objects.equals(segundoApellido,
+                            otroIdBeneficiario.segundoApellido) &&
+                    Objects.equals(fechaNacimiento,
+                            otroIdBeneficiario.fechaNacimiento) &&
+                    Objects.equals(clavePoliza, otroIdBeneficiario.clavePoliza);
         } else {
-                return false;
-            }
+            return false;
+        }
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(nombre, p_apellido, s_apellido, fecha_nacimiento, idpoliza);
+        return Objects.hash(nombres, primerApellido, segundoApellido, fechaNacimiento, clavePoliza);
     }
 
     @Override
     public String toString() {
-        return String.format("idBeneficiarioPoliza: (%s, %s, %s, %s, %s)", nombre,p_apellido,s_apellido,fecha_nacimiento,idpoliza);
+        return String.format("idBeneficiarioPoliza: (%s, %s, %s, %s, %s)", nombres, primerApellido, segundoApellido, fechaNacimiento, clavePoliza);
     }
 }
