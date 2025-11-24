@@ -1,12 +1,13 @@
-package mx.edu.uacm.is.slt.as.sistpolizas.repository;
+package mx.edu.uacm.is.slt.as.sistpolizas.repository; // PACKAGE FINAL CORRECTO
 
-import mx.edu.uacm.is.slt.as.sistpolizas.model.Cliente;
+import mx.edu.uacm.is.slt.as.sistpolizas.model.Cliente; // Importación correcta
 import org.springframework.data.jpa.repository.JpaRepository;
-import org.springframework.data.repository.CrudRepository;
-
 import java.util.Optional;
+//import org.springframework.stereotype.Repository;
 
-public interface ClienteRepository extends JpaRepository<Cliente, String>{
+//@Repository
+public interface ClienteRepository extends JpaRepository<Cliente, String> {
+
     Optional<Cliente> findByNombresAndPrimerApellidoAndSegundoApellido(
             String nombres,
             String primerApellido,

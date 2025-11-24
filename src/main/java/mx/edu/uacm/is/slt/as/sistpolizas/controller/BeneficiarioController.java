@@ -22,7 +22,7 @@ public class BeneficiarioController {
 
     //Servicio REST GET
     @GetMapping(value = {"/beneficiario/{fecha_nacimiento}/{clave_poliza}/{nombres}/{primer_apellido}/{segundo_apellido}",
-                        "/beneficiario/{fecha_nacimiento}/{clave_poliza}/{nombres}/{primer_apellido}"})
+            "/beneficiario/{fecha_nacimiento}/{clave_poliza}/{nombres}/{primer_apellido}"})
     public ResponseEntity<String> getBeneficiario(
             @PathVariable String fecha_nacimiento,
             @PathVariable UUID clave_poliza,
@@ -36,7 +36,7 @@ public class BeneficiarioController {
 
     //Servicio REST  POST
     @PostMapping(value = {"/beneficiario/{fecha_nacimiento}/{clave_poliza}/{porcentaje}/{nombres}/{primer_apellido}/{segundo_apellido}",
-                          "/beneficiario/{fecha_nacimiento}/{clave_poliza}/{porcentaje}/{nombres}/{primer_apellido}"})
+            "/beneficiario/{fecha_nacimiento}/{clave_poliza}/{porcentaje}/{nombres}/{primer_apellido}"})
     public ResponseEntity<String> createBeneficiario(
             @PathVariable String fecha_nacimiento,
             @PathVariable UUID clave_poliza,

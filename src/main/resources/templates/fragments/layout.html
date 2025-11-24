@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title th:text="${title} ?: 'Sistema de Pólizas'">Sistema de Pólizas</title>
+
+    <!-- MDB / Material Bootstrap CSS -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/mdb-ui-kit/7.2.0/mdb.min.css" rel="stylesheet"/>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" rel="stylesheet"/>
+    <link rel="stylesheet" th:href="@{/css/estilos.css}" />
+</head>
+<body>
+
+<!-- Fragmento de layout -->
+<div th:fragment="layout(contentFragment)">
+
+    <!-- SIDEBAR -->
+    <div th:replace="fragments/sidebar :: sidebar"></div>
+
+    <!-- MAIN CONTENT -->
+    <main class="main-content p-4">
+        <div class="container-fluid">
+            <!-- Inserta el contenido pasado desde otra plantilla -->
+            <div th:insert="${contentFragment}"></div>
+        </div>
+    </main>
+
+    <!-- SCRIPTS -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/mdb-ui-kit/7.2.0/mdb.min.js"></script>
+    <script th:src="@{/js/app.js}"></script>
+</div>
+
+</body>
+</html>

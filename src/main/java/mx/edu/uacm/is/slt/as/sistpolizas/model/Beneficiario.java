@@ -2,49 +2,39 @@ package mx.edu.uacm.is.slt.as.sistpolizas.model;
 
 import jakarta.persistence.EmbeddedId;
 import jakarta.persistence.Entity;
-
+import jakarta.persistence.Id;
+import java.util.Date;
 import java.util.Objects;
 
 @Entity
 public class Beneficiario {
 
     @EmbeddedId
-    /*private String nombre;
-    private String p_apellido;
-    private String s_apellido;
-    private Date fecha_nacimiento;
-    */
-    private IdBeneficiarioPoliza polizaBeneficiario;
-    private double porcentaje;
+    private IdBeneficiarioPoliza id;
 
-    // Constructor vacío
-    public Beneficiario() {
-    }
+    private int porcentaje;
 
-    // Constructor con parámetros
+    public Beneficiario() {}
 
-
-    public Beneficiario(IdBeneficiarioPoliza polizaBeneficiario, double porcentaje) {
-        this.polizaBeneficiario = polizaBeneficiario;
+    public Beneficiario(IdBeneficiarioPoliza id,
+                        int porcentaje) {
+        this.id = id;
         this.porcentaje = porcentaje;
     }
 
-    // Getters y Setters
-
-
-    public IdBeneficiarioPoliza getPolizaBeneficiario() {
-        return polizaBeneficiario;
+    public IdBeneficiarioPoliza getId() {
+        return id;
     }
 
-    public void setPolizaBeneficiario(IdBeneficiarioPoliza polizaBeneficiario) {
-        this.polizaBeneficiario = polizaBeneficiario;
+    public void setId(IdBeneficiarioPoliza id) {
+        this.id = id;
     }
 
-    public double getPorcentaje() {
+    public int getPorcentaje() {
         return porcentaje;
     }
 
-    public void setPorcentaje(double porcentaje) {
+    public void setPorcentaje(int porcentaje) {
         this.porcentaje = porcentaje;
     }
 
@@ -54,7 +44,7 @@ public class Beneficiario {
             return true;
         } else if (o instanceof Beneficiario) {
             Beneficiario otroBeneficiario = (Beneficiario) o;
-            return Objects.equals(polizaBeneficiario, otroBeneficiario.polizaBeneficiario);
+            return Objects.equals(poliza_beneficiario, otroBeneficiario.poliza_beneficiario);
         } else {
             return false;
         } // comprueba equivalencia
@@ -62,12 +52,12 @@ public class Beneficiario {
 
     @Override
     public int hashCode() {
-        return Objects.hashCode(polizaBeneficiario);
+        return Objects.hashCode(poliza_beneficiario);
     }
 
     @Override
     public String toString() {
-        return String.format("Beneficiario: (%s, %s )", polizaBeneficiario,porcentaje);
+        return String.format("Beneficiario: (%s, %s )",poliza_beneficiario,porcentaje);
     }
 
 }

@@ -1,3 +1,6 @@
+
+
+
 package mx.edu.uacm.is.slt.as.sistpolizas.controller;
 
 import jakarta.transaction.Transactional;
@@ -32,8 +35,8 @@ public class PolizaController {
 
 
     //end-points GET
-
-    @GetMapping("/polizas")
+    @GetMapping("/pol" +
+            "izas")
     public ResponseEntity<String> getPolizas() {
         return ResponseEntity.ok("Devuelve lista de Poliza");
     }

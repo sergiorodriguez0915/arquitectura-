@@ -1,0 +1,118 @@
+/* estilos.css - estilos personalizados sobre MDBootstrap / Material */
+
+/* Body y contenedores */
+body {
+    background: #f5f7fb;
+    font-family: "Roboto", "Helvetica Neue", Arial, sans-serif;
+    color: #263238;
+}
+
+/* Sidebar */
+.sidebar {
+    width: 260px;
+    background: linear-gradient(180deg, #ffffff 0%, #fafafa 100%);
+    border-right: 1px solid rgba(0,0,0,0.04);
+    position: fixed;
+    top: 0;
+    left: 0;
+    bottom: 0;
+    z-index: 1000;
+    padding-top: 1.5rem;
+}
+
+.sidebar .nav-link {
+    color: #455a64;
+    padding: 12px 20px;
+    display: block;
+    transition: background .15s, color .15s;
+    border-radius: 8px;
+    margin: 6px 8px;
+}
+
+.sidebar .nav-link:hover {
+    background: rgba(33,150,243,0.06);
+    color: #0d47a1;
+    text-decoration: none;
+}
+
+.sidebar .brand {
+    padding: 0 20px 12px 20px;
+    margin-bottom: 8px;
+    font-weight: 600;
+    color: #0d47a1;
+}
+
+/* Main content (to the right of sidebar) */
+.main-content {
+    margin-left: 260px;
+    padding: 1.5rem;
+}
+
+/* Cards */
+.card {
+    border-radius: 12px;
+    box-shadow: 0 6px 18px rgba(33,33,33,0.04);
+}
+
+/* Table */
+.table thead th {
+    background: #fafafa;
+    font-weight: 600;
+    border-bottom: 2px solid rgba(0,0,0,0.04);
+}
+
+.table tbody tr:hover {
+    background: rgba(0,0,0,0.02);
+}
+
+/* Forms - material look enhancements for MDB */
+.form-outline .form-control:focus {
+    box-shadow: none;
+    border-color: rgba(33,150,243,0.6);
+}
+
+.form-label {
+    color: #455a64;
+}
+
+/* Buttons */
+.btn-primary {
+    background-image: linear-gradient(90deg, #1976d2, #0d47a1);
+    border: none;
+    box-shadow: 0 4px 12px rgba(13,71,161,0.12);
+}
+
+.btn-outline-primary {
+    border-color: #1976d2;
+    color: #1976d2;
+}
+
+/* Responsive tweaks */
+@media (max-width: 991px) {
+    .sidebar {
+        width: 70px;
+    }
+    .main-content {
+        margin-left: 70px;
+    }
+    .sidebar .nav-link span {
+        display: none;
+    }
+}
+
+/* Small utilities */
+.mt-2 { margin-top: .5rem; }
+.mb-3 { margin-bottom: 1rem; }
+.p-2 { padding: .5rem; }
+
+/* Alerts (custom) */
+.alert-custom {
+    border-left: 4px solid #1976d2;
+    background: #e8f0fb;
+    color: #0d47a1;
+}
+
+/* Helpers for table overflow */
+.table-responsive {
+    overflow: auto;
+}
