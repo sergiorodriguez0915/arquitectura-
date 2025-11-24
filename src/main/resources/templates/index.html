@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head>
+
+    <!-- Bootstrap CSS -->
+    <link th:href="@{https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css}" rel="stylesheet">
+
+    <!-- FontAwesome Icons -->
+    <link th:href="@{https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css}" rel="stylesheet">
+
+    <!-- Tu CSS personalizado -->
+    <link rel="stylesheet" th:href="@{/css/estilos.css}">
+
+</head>
+
+<!-- Usamos el layout y pasamos el fragmento content -->
+<div th:replace="fragments/layout :: layout(~{this :: content})">
+
+    <!-- Contenido de la página de inicio -->
+    <div th:fragment="content" class="container mt-4">
+
+        <div class="row">
+
+            <div class="col-md-4">
+                <div class="card mb-3 shadow-sm">
+                    <div class="card-body">
+                        <h5 class="card-title">Clientes</h5>
+                        <p class="card-text">Gestiona clientes y consultas por CURP.</p>
+                        <a th:href="@{/web/clientes}" class="btn btn-primary">Ir a Clientes</a>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-md-4">
+                <div class="card mb-3 shadow-sm">
+                    <div class="card-body">
+                        <h5 class="card-title">Pólizas</h5>
+                        <p class="card-text">Consulta, crea, edita y borra pólizas.</p>
+                        <a th:href="@{/web/polizas}" class="btn btn-primary">Ir a Pólizas</a>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-md-4">
+                <div class="card mb-3 shadow-sm">
+                    <div class="card-body">
+                        <h5 class="card-title">Beneficiarios</h5>
+                        <p class="card-text">Administra beneficiarios por póliza.</p>
+                        <a th:href="@{/web/beneficiarios}" class="btn btn-primary">Ir a Beneficiarios</a>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+
+</html>

@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      th:replace="fragments/layout :: layout">
+<div th:block="content" class="container mt-4">
+
+    <div class="card shadow-sm">
+        <div class="card-body">
+
+            <h3 th:text="${poliza.clave == null ? 'Nueva póliza' : 'Editar póliza'}"></h3>
+
+            <!-- Cambié la acción a la ruta correcta de tu WebController -->
+            <form th:object="${poliza}" th:action="@{/web/polizas/crear}" method="post">
+
+                <input type="hidden" th:field="*{clave}"/>
+
+                <div class="form-outline mb-4">
+                    <input type="text" th:field="*{tipo}" id="tipo" class="form-control" required/>
+                    <label class="form-label" for="tipo">Tipo (auto, vida, médico)</label>
+                </div>
+
+                <div class="form-outline mb-4">
+                    <input type="number" th:field="*{monto}" id="monto" class="form-control" required/>
+                    <label class="form-label" for="monto">Monto</label>
+                </div>
+
+                <div class="form-outline mb-4">
+                    <input type="text" th:field="*{descripcion}" id="descripcion" class="form-control" required/>
+                    <label class="form-label" for="descripcion">Descripción</label>
+                </div>
+
+                <!-- Selector de Cliente -->
+                <div class="form-outline mb-4">
+                    <label class="form-label" for="cliente">Cliente</label>
+                    <select th:field="*{cliente.curp}" id="cliente" class="form-control" required>
+                        <option value="">-- Seleccione un cliente --</option>
+                        <th:block th:each="c : ${clientes}">
+                            <option th:value="${c.curp}"
+                                    th:text="${c.nombres} + ' ' + ${c.primerApellido} + ' ' + ${c.segundoApellido}"
+                                    th:selected="${poliza.cliente != null} ? ${poliza.cliente.curp} == ${c.curp} : false">
+                            </option>
+                        </th:block>
+                    </select>
+                </div>
+
+                <button class="btn btn-primary">Guardar</button>
+                <a th:href="@{/web/polizas}" class="btn btn-secondary">Cancelar</a>
+            </form>
+
+        </div>
+    </div>
+</div>
+</html>
