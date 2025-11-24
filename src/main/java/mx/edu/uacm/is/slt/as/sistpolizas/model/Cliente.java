@@ -1,7 +1,8 @@
 package mx.edu.uacm.is.slt.as.sistpolizas.model;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
+import com.fasterxml.jackson.annotation.JsonFormat;
+import jakarta.persistence.*;
+
 import java.util.Date;
 import java.util.Objects;
 
@@ -16,6 +17,9 @@ public class Cliente {
 
     @Id
     private String curp;
+    @Temporal(TemporalType.TIMESTAMP)
+    @Column(name = "fecha_nacimiento")
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd'T'HH:mm:ss.SSSXXX", timezone = "UTC")
     private Date fechaNacimiento;
 
     // constructor vacio
@@ -37,7 +41,6 @@ public class Cliente {
     public String getNombres() {
         return nombres;
     }
-
     public void setNombres(String nombre) {
         this.nombres = nombre;
     }
@@ -45,23 +48,17 @@ public class Cliente {
     public String getPrimerApellido() {
         return primerApellido;
     }
-
     public void setPrimerApellido(String pApellido) {
         this.primerApellido = pApellido;
     }
 
-    public String getSegundoApellido() {
-        return segundoApellido;
-    }
-
+    public String getSegundoApellido() { return segundoApellido; }
     public void setSegundoApellido(String sApellido) {
         this.segundoApellido = sApellido;
     }
-
     public String getDireccion() {
         return direccion;
     }
-
     public void setDireccion(String direccion) {
         this.direccion = direccion;
     }
@@ -69,7 +66,6 @@ public class Cliente {
     public String getCurp() {
         return curp;
     }
-
     public void setCurp(String curp) {
         this.curp = curp;
     }
@@ -77,10 +73,10 @@ public class Cliente {
     public Date getFechaNacimiento() {
         return fechaNacimiento;
     }
-
     public void setFechaNacimiento(Date fechaNacimiento) {
         this.fechaNacimiento = fechaNacimiento;
     }
+
     @Override
     public boolean equals(Object o){
         if(super.equals(o)){

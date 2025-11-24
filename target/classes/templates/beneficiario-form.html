@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      th:replace="fragments/layout :: layout(~{::content})">
+
+<div th:fragment="content" class="container mt-4">
+
+    <div class="card shadow-sm">
+        <div class="card-body">
+
+            <h3 th:text="${beneficiario.id == null ? 'Nuevo beneficiario' : 'Editar beneficiario'}"></h3>
+
+            <form th:action="@{/web/beneficiarios/crear}"
+                  th:object="${beneficiario}" method="post">
+
+                <!-- id y clavePoliza ocultos -->
+                <input type="hidden" th:field="*{id}" />
+                <input type="hidden" th:field="*{clavePoliza}" />
+
+                <div class="form-outline mb-4">
+                    <label for="nombres" class="form-label">Nombres</label>
+                    <input type="text" th:field="*{nombres}" class="form-control" id="nombres" required />
+                </div>
+
+                <div class="form-outline mb-4">
+                    <label for="primerApellido" class="form-label">Primer Apellido</label>
+                    <input type="text" th:field="*{primerApellido}" class="form-control" id="primerApellido" required />
+                </div>
+
+                <div class="form-outline mb-4">
+                    <label for="segundoApellido" class="form-label">Segundo Apellido</label>
+                    <input type="text" th:field="*{segundoApellido}" class="form-control" id="segundoApellido" />
+                </div>
+
+                <div class="form-outline mb-4">
+                    <label for="curp" class="form-label">CURP</label>
+                    <input type="text" th:field="*{curp}" class="form-control" id="curp" required />
+                </div>
+
+                <div class="form-outline mb-4">
+                    <label for="parentesco" class="form-label">Parentesco</label>
+                    <input type="text" th:field="*{parentesco}" class="form-control" id="parentesco" required />
+                </div>
+
+                <button class="btn btn-primary" type="submit">Guardar</button>
+                <a th:href="@{/web/beneficiarios}" class="btn btn-secondary">Cancelar</a>
+
+            </form>
+
+        </div>
+    </div>
+
+</div>
+
+</html>
