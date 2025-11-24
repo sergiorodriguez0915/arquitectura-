@@ -6,6 +6,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.Date;
 import java.util.List;
+import java.util.Optional;
 import java.util.UUID;
 
 public interface BeneficiarioRepository extends JpaRepository<Beneficiario, IdBeneficiarioPoliza> {
@@ -20,7 +21,7 @@ public interface BeneficiarioRepository extends JpaRepository<Beneficiario, IdBe
             String segundoApellido
     );
 
-    Optional<Beneficiario> findByPolizaBeneficiario_FechaNacimiento(Date fechaNacimiento);
+    Optional<Beneficiario> findById_FechaNacimiento(Date fechaNacimiento);
 }
 
 

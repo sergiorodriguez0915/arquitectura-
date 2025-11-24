@@ -44,7 +44,7 @@ public class Beneficiario {
             return true;
         } else if (o instanceof Beneficiario) {
             Beneficiario otroBeneficiario = (Beneficiario) o;
-            return Objects.equals(poliza_beneficiario, otroBeneficiario.poliza_beneficiario);
+            return Objects.equals(id, otroBeneficiario.id);
         } else {
             return false;
         } // comprueba equivalencia
@@ -52,12 +52,12 @@ public class Beneficiario {
 
     @Override
     public int hashCode() {
-        return Objects.hashCode(poliza_beneficiario);
+        return Objects.hashCode(id);
     }
 
     @Override
     public String toString() {
-        return String.format("Beneficiario: (%s, %s )",poliza_beneficiario,porcentaje);
+        return String.format("Beneficiario: (%s, %s )",id,porcentaje);
     }
 
 }

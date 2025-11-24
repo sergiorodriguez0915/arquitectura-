@@ -5,46 +5,28 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="b6ed333a-8ca9-4237-a1e9-e51ad8bb9732" name="Changes" comment="Merge remote-tracking branch 'origin/developer' into developer">
-      <change afterPath="$PROJECT_DIR$/src/main/java/mx/edu/uacm/is/slt/as/sistpolizas/controller/web/BeneficiarioWebController.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/mx/edu/uacm/is/slt/as/sistpolizas/controller/web/ClienteWebController.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/mx/edu/uacm/is/slt/as/sistpolizas/controller/web/HomeController.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/mx/edu/uacm/is/slt/as/sistpolizas/controller/web/PolizaWebController.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/resources/static/css/estilos.css" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/resources/static/js/app.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/resources/templates/beneficiario-form.html" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/resources/templates/beneficiario.html" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/resources/templates/cliente-form.html" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/resources/templates/clientes.html" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/resources/templates/fragments/beneficiario.html" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/resources/templates/fragments/layout.html" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/resources/templates/fragments/sidebar.html" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/resources/templates/index.html" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/resources/templates/layout.html" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/resources/templates/poliza-form.html" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/resources/templates/polizas.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/compiler.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/compiler.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/dataSources.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/dataSources.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/data_source_mapping.xml" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/pom.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/mx/edu/uacm/is/slt/as/sistpolizas/controller/ClienteController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/mx/edu/uacm/is/slt/as/sistpolizas/controller/ClienteController.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/mx/edu/uacm/is/slt/as/sistpolizas/model/Beneficiario.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/mx/edu/uacm/is/slt/as/sistpolizas/model/Beneficiario.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/mx/edu/uacm/is/slt/as/sistpolizas/model/Cliente.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/mx/edu/uacm/is/slt/as/sistpolizas/model/Cliente.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/mx/edu/uacm/is/slt/as/sistpolizas/model/IdBeneficiarioPoliza.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/mx/edu/uacm/is/slt/as/sistpolizas/model/IdBeneficiarioPoliza.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/mx/edu/uacm/is/slt/as/sistpolizas/model/Poliza.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/mx/edu/uacm/is/slt/as/sistpolizas/model/Poliza.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/mx/edu/uacm/is/slt/as/sistpolizas/repository/BeneficiarioRepository.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/mx/edu/uacm/is/slt/as/sistpolizas/repository/BeneficiarioRepository.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/mx/edu/uacm/is/slt/as/sistpolizas/repository/ClienteRepository.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/mx/edu/uacm/is/slt/as/sistpolizas/repository/ClienteRepository.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/mx/edu/uacm/is/slt/as/sistpolizas/service/BeneficiarioService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/mx/edu/uacm/is/slt/as/sistpolizas/service/BeneficiarioService.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/mx/edu/uacm/is/slt/as/sistpolizas/service/ClienteService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/mx/edu/uacm/is/slt/as/sistpolizas/service/ClienteService.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/mx/edu/uacm/is/slt/as/sistpolizas/service/PolizaService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/mx/edu/uacm/is/slt/as/sistpolizas/service/PolizaService.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/application.properties" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/application.properties" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/target/classes/application.properties" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/application.properties" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/mx/edu/uacm/is/slt/as/sistpolizas/controller/BeneficiarioController.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/mx/edu/uacm/is/slt/as/sistpolizas/controller/BeneficiarioController.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/mx/edu/uacm/is/slt/as/sistpolizas/controller/ClienteController$1.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/mx/edu/uacm/is/slt/as/sistpolizas/controller/ClienteController$1.class" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/target/classes/mx/edu/uacm/is/slt/as/sistpolizas/controller/ClienteController.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/mx/edu/uacm/is/slt/as/sistpolizas/controller/ClienteController.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/mx/edu/uacm/is/slt/as/sistpolizas/controller/PolizaController.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/mx/edu/uacm/is/slt/as/sistpolizas/controller/PolizaController.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/mx/edu/uacm/is/slt/as/sistpolizas/controller/web/BeneficiarioWebController.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/mx/edu/uacm/is/slt/as/sistpolizas/controller/web/BeneficiarioWebController.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/mx/edu/uacm/is/slt/as/sistpolizas/controller/web/ClienteWebController.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/mx/edu/uacm/is/slt/as/sistpolizas/controller/web/ClienteWebController.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/mx/edu/uacm/is/slt/as/sistpolizas/controller/web/HomeController.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/mx/edu/uacm/is/slt/as/sistpolizas/controller/web/HomeController.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/mx/edu/uacm/is/slt/as/sistpolizas/controller/web/PolizaWebController.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/mx/edu/uacm/is/slt/as/sistpolizas/controller/web/PolizaWebController.class" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/target/classes/mx/edu/uacm/is/slt/as/sistpolizas/model/Beneficiario.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/mx/edu/uacm/is/slt/as/sistpolizas/model/Beneficiario.class" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/target/classes/mx/edu/uacm/is/slt/as/sistpolizas/model/Cliente.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/mx/edu/uacm/is/slt/as/sistpolizas/model/Cliente.class" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/target/classes/mx/edu/uacm/is/slt/as/sistpolizas/model/IdBeneficiarioPoliza.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/mx/edu/uacm/is/slt/as/sistpolizas/model/IdBeneficiarioPoliza.class" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/target/classes/mx/edu/uacm/is/slt/as/sistpolizas/model/Poliza.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/mx/edu/uacm/is/slt/as/sistpolizas/model/Poliza.class" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/target/classes/mx/edu/uacm/is/slt/as/sistpolizas/repository/BeneficiarioRepository.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/mx/edu/uacm/is/slt/as/sistpolizas/repository/BeneficiarioRepository.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/mx/edu/uacm/is/slt/as/sistpolizas/repository/ClienteRepository.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/mx/edu/uacm/is/slt/as/sistpolizas/repository/ClienteRepository.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/mx/edu/uacm/is/slt/as/sistpolizas/repository/PolizaRepository.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/mx/edu/uacm/is/slt/as/sistpolizas/repository/PolizaRepository.class" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/target/classes/mx/edu/uacm/is/slt/as/sistpolizas/service/BeneficiarioService.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/mx/edu/uacm/is/slt/as/sistpolizas/service/BeneficiarioService.class" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/target/classes/mx/edu/uacm/is/slt/as/sistpolizas/service/ClienteService.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/mx/edu/uacm/is/slt/as/sistpolizas/service/ClienteService.class" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/target/classes/mx/edu/uacm/is/slt/as/sistpolizas/service/PolizaService.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/mx/edu/uacm/is/slt/as/sistpolizas/service/PolizaService.class" afterDir="false" />
@@ -100,38 +82,38 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent">{
-  &quot;keyToString&quot;: {
-    &quot;DefaultHtmlFileTemplate&quot;: &quot;HTML File&quot;,
-    &quot;JUnit.All in sistpolizas (1).executor&quot;: &quot;Run&quot;,
-    &quot;JUnit.All in sistpolizas.executor&quot;: &quot;Run&quot;,
-    &quot;ModuleVcsDetector.initialDetectionPerformed&quot;: &quot;true&quot;,
-    &quot;RequestMappingsPanelOrder0&quot;: &quot;0&quot;,
-    &quot;RequestMappingsPanelOrder1&quot;: &quot;1&quot;,
-    &quot;RequestMappingsPanelWidth0&quot;: &quot;75&quot;,
-    &quot;RequestMappingsPanelWidth1&quot;: &quot;75&quot;,
-    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
-    &quot;RunOnceActivity.TerminalTabsStorage.copyFrom.TerminalArrangementManager.252&quot;: &quot;true&quot;,
-    &quot;RunOnceActivity.git.unshallow&quot;: &quot;true&quot;,
-    &quot;Spring Boot.SistemaPolizasApplication.executor&quot;: &quot;Run&quot;,
-    &quot;dart.analysis.tool.window.visible&quot;: &quot;false&quot;,
-    &quot;git-widget-placeholder&quot;: &quot;#2 on rodriguezSergio&quot;,
-    &quot;kotlin-language-version-configured&quot;: &quot;true&quot;,
-    &quot;last_opened_file_path&quot;: &quot;C:/Users/Sergio Rodriguez/Downloads/beneficiario/src/main/resources/templates&quot;,
-    &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
-    &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
-    &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
-    &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,
-    &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;,
-    &quot;run.code.analysis.last.selected.profile&quot;: &quot;pProject Default&quot;,
-    &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
+  <component name="PropertiesComponent"><![CDATA[{
+  "keyToString": {
+    "DefaultHtmlFileTemplate": "HTML File",
+    "JUnit.All in sistpolizas (1).executor": "Run",
+    "JUnit.All in sistpolizas.executor": "Run",
+    "ModuleVcsDetector.initialDetectionPerformed": "true",
+    "RequestMappingsPanelOrder0": "0",
+    "RequestMappingsPanelOrder1": "1",
+    "RequestMappingsPanelWidth0": "75",
+    "RequestMappingsPanelWidth1": "75",
+    "RunOnceActivity.ShowReadmeOnStart": "true",
+    "RunOnceActivity.TerminalTabsStorage.copyFrom.TerminalArrangementManager.252": "true",
+    "RunOnceActivity.git.unshallow": "true",
+    "Spring Boot.SistemaPolizasApplication.executor": "Run",
+    "dart.analysis.tool.window.visible": "false",
+    "git-widget-placeholder": "JuanMonje__controladoresCyB",
+    "kotlin-language-version-configured": "true",
+    "last_opened_file_path": "C:/Users/Sergio Rodriguez/Downloads/beneficiario/src/main/resources/templates",
+    "node.js.detected.package.eslint": "true",
+    "node.js.detected.package.tslint": "true",
+    "node.js.selected.package.eslint": "(autodetect)",
+    "node.js.selected.package.tslint": "(autodetect)",
+    "nodejs_package_manager_path": "npm",
+    "run.code.analysis.last.selected.profile": "pProject Default",
+    "vue.rearranger.settings.migration": "true"
   },
-  &quot;keyToStringList&quot;: {
-    &quot;DatabaseDriversLRU&quot;: [
-      &quot;postgresql&quot;
+  "keyToStringList": {
+    "DatabaseDriversLRU": [
+      "postgresql"
     ]
   }
-}</component>
+}]]></component>
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
       <recent name="C:\Users\Sergio Rodriguez\Downloads\beneficiario\src\main\resources\templates" />
@@ -166,6 +148,11 @@
         <option name="Make" enabled="true" />
       </method>
     </configuration>
+    <list>
+      <item itemvalue="JUnit.All in sistpolizas" />
+      <item itemvalue="JUnit.All in sistpolizas (1)" />
+      <item itemvalue="Spring Boot.SistemaPolizasApplication" />
+    </list>
     <recent_temporary>
       <list>
         <item itemvalue="JUnit.All in sistpolizas (1)" />

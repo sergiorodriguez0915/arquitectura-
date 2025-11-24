@@ -57,9 +57,6 @@ public class Cliente {
         this.segundoApellido = sApellido;
     }
 
-    public void setS_apellido(String s_apellido) {
-        this.s_apellido = s_apellido;
-    }
 
     public String getDireccion() {
         return direccion;
