@@ -9,11 +9,11 @@ import java.util.Optional;
 
 public interface BeneficiarioRepository extends JpaRepository<Beneficiario, IdBeneficiarioPoliza> {
 
-    Optional<Beneficiario> findByIdNombresAndIdPrimerApellidoAndIdSegundoApellido(
-            String nombres,
+    Optional<Beneficiario> findByPolizaBeneficiario_NombreAndPolizaBeneficiario_PrimerApellidoAndPolizaBeneficiario_SegundoApellido(
+            String nombre,
             String primerApellido,
             String segundoApellido
     );
 
-    Optional<Beneficiario> findByIdFechaNacimiento(Date fechaNacimiento);
+    Optional<Beneficiario> findByPolizaBeneficiario_FechaNacimiento(Date fechaNacimiento);
 }
