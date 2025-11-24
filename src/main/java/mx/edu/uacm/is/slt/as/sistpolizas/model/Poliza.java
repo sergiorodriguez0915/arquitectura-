@@ -9,30 +9,30 @@ import java.util.UUID;
 public class Poliza {
 
     @Id
-    private UUID   polizaid; //todo es el identificador
+    private UUID clave; //todo es el identificador
     private String tipo;
     private String descripcion;
     private double monto;
-    private String cliente_asegurado;
+    private String curpCliente;
 
 
     public Poliza() {
     }
 
     public Poliza(UUID polizaid, String tipo, String descripcion, double monto, String cliente_asegurado) {
-        this.polizaid = polizaid;
+        this.clave = polizaid;
         this.tipo = tipo;
         this.descripcion = descripcion;
         this.monto = monto;
-        this.cliente_asegurado = cliente_asegurado;
+        this.curpCliente = cliente_asegurado;
     }
 
-    public UUID getPolizaid() {
-        return polizaid;
+    public UUID getClave() {
+        return clave;
     }
 
-    public void setPolizaid(UUID polizaid) {
-        this.polizaid = polizaid;
+    public void setClave(UUID polizaid) {
+        this.clave = polizaid;
     }
 
     public String getTipo() {
@@ -59,12 +59,12 @@ public class Poliza {
         this.monto = monto;
     }
 
-    public String getCliente_asegurado() {
-        return cliente_asegurado;
+    public String getCurpCliente() {
+        return curpCliente;
     }
 
-    public void setCliente_asegurado(String cliente_asegurado) {
-        this.cliente_asegurado = cliente_asegurado;
+    public void setCurpCliente(String curpCliente) {
+        this.curpCliente = curpCliente;
     }
 
     @Override
@@ -73,7 +73,7 @@ public class Poliza {
             return true;
         } else if (o instanceof Poliza) {
             Poliza otraPoliza = (Poliza) o;
-            return Objects.equals(polizaid, otraPoliza.polizaid);
+            return Objects.equals(clave, otraPoliza.clave);
         } else {
             return false;
         } // comprueba equivalencia
@@ -81,11 +81,11 @@ public class Poliza {
 
     @Override
     public int hashCode() {
-        return Objects.hashCode(polizaid);
+        return Objects.hashCode(clave);
     }
 
     @Override
     public String toString() {
-        return String.format("Poliza(%s, %s, %s, %.2f, %s)", polizaid, tipo, descripcion, monto, cliente_asegurado);
+        return String.format("Poliza(%s, %s, %s, %.2f, %s)", clave, tipo, descripcion, monto, curpCliente);
     }
 }

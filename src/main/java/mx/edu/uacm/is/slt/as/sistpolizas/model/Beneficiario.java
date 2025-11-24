@@ -2,8 +2,7 @@ package mx.edu.uacm.is.slt.as.sistpolizas.model;
 
 import jakarta.persistence.EmbeddedId;
 import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
-import java.util.Date;
+
 import java.util.Objects;
 
 @Entity
@@ -15,7 +14,7 @@ public class Beneficiario {
     private String s_apellido;
     private Date fecha_nacimiento;
     */
-    private IdBeneficiarioPoliza poliza_beneficiario;
+    private IdBeneficiarioPoliza polizaBeneficiario;
     private double porcentaje;
 
     // Constructor vacío
@@ -25,20 +24,20 @@ public class Beneficiario {
     // Constructor con parámetros
 
 
-    public Beneficiario(IdBeneficiarioPoliza poliza_beneficiario, double porcentaje) {
-        this.poliza_beneficiario = poliza_beneficiario;
+    public Beneficiario(IdBeneficiarioPoliza polizaBeneficiario, double porcentaje) {
+        this.polizaBeneficiario = polizaBeneficiario;
         this.porcentaje = porcentaje;
     }
 
     // Getters y Setters
 
 
-    public IdBeneficiarioPoliza getPoliza_beneficiario() {
-        return poliza_beneficiario;
+    public IdBeneficiarioPoliza getPolizaBeneficiario() {
+        return polizaBeneficiario;
     }
 
-    public void setPoliza_beneficiario(IdBeneficiarioPoliza poliza_beneficiario) {
-        this.poliza_beneficiario = poliza_beneficiario;
+    public void setPolizaBeneficiario(IdBeneficiarioPoliza polizaBeneficiario) {
+        this.polizaBeneficiario = polizaBeneficiario;
     }
 
     public double getPorcentaje() {
@@ -55,7 +54,7 @@ public class Beneficiario {
             return true;
         } else if (o instanceof Beneficiario) {
             Beneficiario otroBeneficiario = (Beneficiario) o;
-            return Objects.equals(poliza_beneficiario, otroBeneficiario.poliza_beneficiario);
+            return Objects.equals(polizaBeneficiario, otroBeneficiario.polizaBeneficiario);
         } else {
             return false;
         } // comprueba equivalencia
@@ -63,12 +62,12 @@ public class Beneficiario {
 
     @Override
     public int hashCode() {
-        return Objects.hashCode(poliza_beneficiario);
+        return Objects.hashCode(polizaBeneficiario);
     }
 
     @Override
     public String toString() {
-        return String.format("Beneficiario: (%s, %s )",poliza_beneficiario,porcentaje);
+        return String.format("Beneficiario: (%s, %s )", polizaBeneficiario,porcentaje);
     }
 
 }
