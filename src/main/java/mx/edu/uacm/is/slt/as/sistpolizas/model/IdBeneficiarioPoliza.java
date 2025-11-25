@@ -33,7 +33,7 @@ public class IdBeneficiarioPoliza implements Serializable {
                                 String primerApellido,
                                 String segundoApellido,
                                 Date fechaNacimiento) {
-        this.curp = curp;
+
         this.clavePoliza = clavePoliza;
         this.nombres = nombres;
         this.primerApellido = primerApellido;

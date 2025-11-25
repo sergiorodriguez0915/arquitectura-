@@ -1,13 +1,12 @@
 package mx.edu.uacm.is.slt.as.sistpolizas.service;
 
-import mx.edu.uacm.is.slt.as.sistpolizas.model.Cliente;
 import mx.edu.uacm.is.slt.as.sistpolizas.model.Poliza;
 import mx.edu.uacm.is.slt.as.sistpolizas.repository.PolizaRepository;
-import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
-import org.springframework.web.client.HttpClientErrorException;
 import org.springframework.web.client.RestTemplate;
 import org.springframework.web.server.ResponseStatusException;
+import org.springframework.http.HttpStatus;
 
 import java.util.*;
 import java.util.stream.Collectors;
@@ -16,174 +15,84 @@ import java.util.stream.Collectors;
 public class PolizaService {
 
     private final PolizaRepository polizaRepository;
-    private final ClienteService clienteService;
     private final RestTemplate restTemplate = new RestTemplate();
-    private final String REMOTE_API = "http://nachintoch.mx:8080";
+    private final String API_REMOTA = "http://nachintoch.mx:8080/polizas"; // URL corregida
 
-    public PolizaService(PolizaRepository polizaRepository, ClienteService clienteService) {
+    public PolizaService(PolizaRepository polizaRepository) {
         this.polizaRepository = polizaRepository;
-        this.clienteService = clienteService;
     }
 
-    public List<Poliza> getAllPolizas() {
+    // Traer todas las pólizas locales + remotas
+    public List<Poliza> obtenerTodasCombinadas() {
         List<Poliza> locales = polizaRepository.findAll();
-        if (!locales.isEmpty()) return locales;
+        List<Poliza> remotas = new ArrayList<>();
 
         try {
-            Poliza[] arr = restTemplate.getForObject(REMOTE_API + "/polizas", Poliza[].class);
-            if (arr == null) return Collections.emptyList();
-            List<Poliza> remotas = Arrays.asList(arr);
+            ResponseEntity<Poliza[]> response = restTemplate.getForEntity(API_REMOTA, Poliza[].class);
+            if (response.getBody() != null) {
+                remotas = Arrays.asList(response.getBody());
+            }
+        } catch (Exception e) {
+            System.out.println("No se pudo traer las pólizas remotas: " + e.getMessage());
+        }
 
-            List<Poliza> aGuardar = new ArrayList<>();
+        List<Poliza> combinadas = new ArrayList<>();
+        combinadas.addAll(locales);
+        combinadas.addAll(remotas);
+        return combinadas;
+    }
 
-            for (Poliza p : remotas) {
-                if (p.getCliente() == null || p.getCliente().getCurp() == null) {
-                    System.err.println("Poliza remota sin cliente válido: " + p.getClave());
-                    continue; // omitimos esta póliza
-                }
+    // Buscar pólizas filtrando por cualquier campo, con paginación
+    public List<Poliza> buscarPolizas(String clave, String curp, String nombre, String tipo,
+                                      String beneficiario, String fechaNacBenef,
+                                      Integer pagina, Integer tam) {
 
-                String curp = p.getCliente().getCurp();
-                Cliente cliente;
-                if (!clienteService.existePorCurp(curp)) {
-                    cliente = fetchClienteRemoto(curp);
-                    if (cliente == null) {
-                        System.err.println("Cliente remoto no encontrado para póliza: " + p.getClave());
-                        continue; // omitimos esta póliza
-                    }
-                    clienteService.crearCliente(cliente);
-                } else {
-                    cliente = clienteService.obtenerCliente(curp);
-                }
+        List<Poliza> todas = obtenerTodasCombinadas();
 
-                p.setCliente(cliente);
-                aGuardar.add(p);
+        List<Poliza> filtradas = todas.stream().filter(p -> {
+            boolean coincide = true;
+
+            if (clave != null && !clave.isBlank())
+                coincide = p.getClave() != null && p.getClave().toString().contains(clave);
+
+            if (coincide && curp != null && !curp.isBlank())
+                coincide = p.getCliente() != null && p.getCliente().getCurp() != null &&
+                        p.getCliente().getCurp().toLowerCase().contains(curp.toLowerCase());
+
+            if (coincide && nombre != null && !nombre.isBlank()) {
+                String completo = p.getCliente() != null
+                        ? (p.getCliente().getNombres() + " " + p.getCliente().getPrimerApellido() + " " +
+                        (p.getCliente().getSegundoApellido() != null ? p.getCliente().getSegundoApellido() : ""))
+                        : "";
+                coincide = completo.toLowerCase().contains(nombre.toLowerCase());
             }
 
-            polizaRepository.saveAll(aGuardar);
-            return aGuardar;
+            if (coincide && tipo != null && !tipo.isBlank())
+                coincide = p.getTipo() != null && p.getTipo().toLowerCase().contains(tipo.toLowerCase());
 
-        } catch (HttpClientErrorException e) {
-            throw new ResponseStatusException(HttpStatus.BAD_GATEWAY,
-                    "Error consultando polizas en sistema remoto");
-        }
+            return coincide;
+        }).collect(Collectors.toList());
+
+        // Paginación
+        int pag = (pagina == null || pagina < 0) ? 0 : pagina;
+        int tamaño = (tam == null || tam <= 0) ? 50 : tam;
+        int inicio = pag * tamaño;
+        if (inicio >= filtradas.size()) return Collections.emptyList();
+        int fin = Math.min(inicio + tamaño, filtradas.size());
+        return filtradas.subList(inicio, fin);
     }
 
-
-    public Poliza getPorClave(UUID clave) {
-        Optional<Poliza> local = polizaRepository.findById(clave);
-        if (local.isPresent()) {
-            return local.get();
-        }
-
-        try {
-            Poliza remoto = restTemplate.getForObject(REMOTE_API + "/poliza/" + clave, Poliza.class);
-            if (remoto == null) {
-                throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Poliza no encontrada en remoto");
-            }
-
-            // Obtener cliente y asignarlo
-            Cliente cliente = clienteService.obtenerCliente(remoto.getCliente().getCurp());
-            remoto.setCliente(cliente);
-
-            polizaRepository.save(remoto);
-            return remoto;
-        } catch (HttpClientErrorException e) {
-            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Poliza no encontrada en remoto");
-        }
+    // Métodos locales CRUD
+    public Poliza obtenerPorClave(UUID clave) {
+        return polizaRepository.findById(clave)
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Póliza no encontrada"));
     }
 
-
-    public Poliza crearPoliza(UUID clave, String tipo, double monto, String descripcion, String curpCliente) {
-        Cliente cliente = clienteService.obtenerCliente(curpCliente);
-
-        validarClaveNoExistente(clave);
-        tipo = normalizarTipo(tipo);
-        validarTipoValido(tipo);
-        if (monto <= 0) throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Monto debe ser > 0");
-
-        Poliza poliza = new Poliza(clave, tipo, descripcion, monto, cliente);
-
-        try {
-            String url = String.format(REMOTE_API + "/poliza/%s/%s/%.2f/%s/%s",
-                    clave, tipo, monto, urlEncode(descripcion), urlEncode(curpCliente));
-            restTemplate.postForObject(url, null, Void.class);
-        } catch (HttpClientErrorException e) {
-            throw new ResponseStatusException(HttpStatus.BAD_GATEWAY, "Error registrando poliza en remoto");
-        }
-
-        return polizaRepository.save(poliza);
-    }
-
-    public Poliza actualizarPoliza(UUID clave, String tipo, double monto, String descripcion, String curpCliente) {
-        Poliza existente = polizaRepository.findById(clave)
-                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Poliza no encontrada"));
-
-        Cliente cliente = clienteService.obtenerCliente(curpCliente);
-
-        tipo = normalizarTipo(tipo);
-        validarTipoValido(tipo);
-        if (monto <= 0) throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Monto debe ser > 0");
-
-        existente.setTipo(tipo);
-        existente.setMonto(monto);
-        existente.setDescripcion(descripcion);
-        existente.setCliente(cliente);
-
-        try {
-            String url = String.format(REMOTE_API + "/poliza/%s/%s/%.2f/%s/%s",
-                    clave, tipo, monto, urlEncode(descripcion), urlEncode(curpCliente));
-            restTemplate.put(url, null);
-        } catch (HttpClientErrorException e) {
-            throw new ResponseStatusException(HttpStatus.BAD_GATEWAY, "Error actualizando poliza en remoto");
-        }
-
-        return polizaRepository.save(existente);
+    public void guardarPoliza(Poliza poliza) {
+        polizaRepository.save(poliza);
     }
 
     public void borrarPorClave(UUID clave) {
-        try {
-            restTemplate.delete(REMOTE_API + "/poliza/" + clave);
-        } catch (HttpClientErrorException.NotFound e) {
-        } catch (HttpClientErrorException e) {
-            throw new ResponseStatusException(HttpStatus.BAD_GATEWAY, "Error borrando poliza en remoto");
-        }
-
         polizaRepository.deleteById(clave);
-    }
-
-    private Cliente fetchClienteRemoto(String curp) {
-        try {
-            return restTemplate.getForObject(REMOTE_API + "/clientes/" + curp, Cliente.class);
-        } catch (HttpClientErrorException.NotFound e) {
-            return null;
-        } catch (HttpClientErrorException e) {
-            throw new ResponseStatusException(HttpStatus.BAD_GATEWAY, "Error consultando cliente remoto");
-        }
-    }
-
-    private void validarClaveNoExistente(UUID clave) {
-        if (polizaRepository.existsById(clave))
-            throw new ResponseStatusException(HttpStatus.CONFLICT, "Ya existe una poliza con esa clave");
-    }
-
-    private void validarTipoValido(String tipo) {
-        Set<String> permitidos = new HashSet<>(Arrays.asList("auto", "vida", "médico", "medico"));
-        if (!permitidos.contains(tipo.toLowerCase()))
-            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Tipo de poliza inválido");
-    }
-
-    private String normalizarTipo(String tipo) {
-        if (tipo == null) return null;
-        switch (tipo.trim().toLowerCase()) {
-            case "0": return "auto";
-            case "1": return "vida";
-            case "2": return "médico";
-            case "medico": return "médico";
-            default: return tipo;
-        }
-    }
-
-    private String urlEncode(String s) {
-        return s == null ? "" : s.replace(" ", "%20");
     }
 }

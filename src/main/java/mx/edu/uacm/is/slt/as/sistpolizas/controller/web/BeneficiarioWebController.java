@@ -29,7 +29,7 @@ public class BeneficiarioWebController {
     public String list(Model model) {
         model.addAttribute("beneficiarios", beneficiarioService.obtenerTodos());
         model.addAttribute("title", "Beneficiarios");
-        return "beneficiarios"; // no "fragments/layout"
+        return "beneficiarios";
     }
 
     // ====================================
@@ -38,11 +38,10 @@ public class BeneficiarioWebController {
     @GetMapping("/nuevo")
     public String nuevoForm(Model model) {
         model.addAttribute("beneficiario", new Beneficiario());
-        model.addAttribute("polizas", polizaService.getAllPolizas());
+        model.addAttribute("polizas", polizaService.obtenerTodasCombinadas()); // CORREGIDO
         model.addAttribute("title", "Nuevo Beneficiario");
-        return "beneficiario-form"; // no "fragments/layout"
+        return "beneficiario-form";
     }
-
 
     // ================================
     // Guardar nuevo beneficiario
@@ -79,7 +78,7 @@ public class BeneficiarioWebController {
                 .orElseThrow(() -> new IllegalArgumentException("Beneficiario no encontrado"));
 
         model.addAttribute("beneficiario", beneficiario);
-        model.addAttribute("polizas", polizaService.getAllPolizas());
+        model.addAttribute("polizas", polizaService.obtenerTodasCombinadas()); // CORREGIDO
         model.addAttribute("contentFragment", "beneficiario-form :: beneficiarioFormContent");
         model.addAttribute("title", "Editar Beneficiario");
 
