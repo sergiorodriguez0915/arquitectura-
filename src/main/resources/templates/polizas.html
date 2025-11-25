@@ -1,79 +1,243 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
-
 <head>
 
     <!-- Bootstrap CSS -->
     <link th:href="@{https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css}" rel="stylesheet">
 
-    <!-- FontAwesome Icons -->
+    <!-- FontAwesome -->
     <link th:href="@{https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css}" rel="stylesheet">
 
-    <!-- Tu CSS personalizado -->
     <link rel="stylesheet" th:href="@{/css/estilos.css}">
-
 </head>
 
 <div th:replace="fragments/layout :: layout(~{this :: content})">
 
     <div th:fragment="content" class="container mt-4">
 
-        <div class="card shadow-sm">
+        <div class="card shadow-sm mb-4">
             <div class="card-body">
-                <h3 class="mb-4">Pólizas</h3>
 
-                <a href="/polizas/nueva" class="btn btn-primary mb-3">
-                    <i class="fas fa-plus-circle"></i> Nueva póliza
-                </a>
+                <h3 class="mb-4">Gestión de Pólizas</h3>
 
-                <!-- 🔥 FORMULARIO PARA ELIMINAR POLIZA POR CLAVE -->
-                <form th:action="@{/polizas/eliminar}" method="post" class="row g-2 mb-4">
+                <!-- ========================= -->
+                <!--   FORMULARIO DE BUSQUEDA -->
+                <!-- ========================= -->
+                <form th:action="@{/polizas/buscar}" method="get" class="row g-2 mb-4">
 
-                    <div class="col-auto">
-                        <input type="text" name="clave" class="form-control" placeholder="Clave de póliza">
+                    <div class="col-md-3">
+                        <select name="filtro" class="form-select">
+                            <option value="clave">Clave</option>
+                            <option value="curp">CURP</option>
+                            <option value="nombre">Nombre completo</option>
+                            <option value="tipo">Tipo</option>
+                        </select>
+                    </div>
+
+                    <div class="col-md-5">
+                        <input type="text" name="valor" class="form-control" placeholder="Valor a buscar">
                     </div>
 
                     <div class="col-auto">
-                        <button type="submit" class="btn btn-danger">
-                            <i class="fas fa-trash"></i> Eliminar póliza
+                        <button type="submit" class="btn btn-success">
+                            <i class="fas fa-search"></i> Buscar
                         </button>
                     </div>
+
+                    <div class="col-auto ms-auto">
+                        <button type="button" class="btn btn-primary" onclick="abrirModalCrear()">
+                            <i class="fas fa-plus-circle"></i> Nueva Póliza
+                        </button>
+                    </div>
+
                 </form>
 
+
+                <!-- ========================= -->
                 <!-- TABLA DE POLIZAS -->
-                <table class="table table-hover">
-                    <thead class="table-light">
-                    <tr>
-                        <th>Clave</th>
-                        <th>Tipo</th>
-                        <th>Monto</th>
-                        <th>Descripción</th>
-                        <th>Cliente</th>
-                        <th>Acciones</th>
-                    </tr>
-                    </thead>
+                <!-- ========================= -->
+                <div class="table-responsive">
+                    <table class="table table-hover align-middle">
+                        <thead class="table-light">
+                        <tr>
+                            <th>Clave</th>
+                            <th>Tipo</th>
+                            <th>Monto</th>
+                            <th>Descripción</th>
+                            <th>Cliente</th>
+                            <th>CURP</th>
+                            <th>Acciones</th>
+                        </tr>
+                        </thead>
 
-                    <tbody>
-                    <tr th:each="p : ${polizas}">
-                        <td th:text="${p.clave}"></td>
-                        <td th:text="${p.tipo}"></td>
-                        <td th:text="${p.monto}"></td>
-                        <td th:text="${p.descripcion}"></td>
-                        <td th:text="${p.cliente.curp}"></td>
+                        <tbody>
+                        <tr th:each="p : ${polizas}"
+                            th:data-clave="${p.clave}"
+                            th:data-tipo="${p.tipo}"
+                            th:data-monto="${p.monto}"
+                            th:data-descripcion="${p.descripcion}"
+                            th:data-curp="${p.cliente != null ? p.cliente.curp : ''}">
 
-                        <td>
-                            <!-- Solo botón editar -->
-                            <a th:href="@{/polizas/editar/{id}(id=${p.clave})}"
-                               class="btn btn-warning btn-sm">Editar</a>
-                        </td>
-                    </tr>
-                    </tbody>
-                </table>
+                            <td th:text="${p.clave}"></td>
+                            <td th:text="${p.tipo}"></td>
+                            <td th:text="${p.monto}"></td>
+                            <td th:text="${p.descripcion}"></td>
+
+                            <td th:text="${p.cliente != null ? p.cliente.nombres + ' ' + p.cliente.primerApellido : 'Sin cliente'}"></td>
+                            <td th:text="${p.cliente != null ? p.cliente.curp : 'N/A'}"></td>
+
+                            <td>
+                                <button class="btn btn-sm btn-warning"
+                                        onclick="editarPoliza(this.parentElement.parentElement)">
+                                    <i class="fas fa-edit"></i>
+                                </button>
+
+                                <a th:href="@{'/polizas/eliminar/' + ${p.clave}}"
+                                   class="btn btn-sm btn-danger"
+                                   onclick="return confirm('¿Seguro que deseas eliminar esta póliza?');">
+                                    <i class="fas fa-trash"></i>
+                                </a>
+                            </td>
+                        </tr>
+                        </tbody>
+
+                    </table>
+                </div>
 
             </div>
         </div>
 
+
+
+        <!-- ========================= -->
+        <!-- MODAL CREAR / EDITAR -->
+        <!-- ========================= -->
+        <div class="modal fade" id="modalPoliza" tabindex="-1">
+            <div class="modal-dialog modal-lg modal-dialog-centered">
+                <div class="modal-content shadow">
+
+                    <div class="modal-header bg-primary text-white">
+                        <h5 id="tituloModal" class="modal-title">Nueva Póliza</h5>
+                        <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
+                    </div>
+
+                    <form id="formPoliza" method="post">
+                        <div class="modal-body">
+
+                            <div class="row g-3">
+
+                                <div class="col-md-4">
+                                    <label class="form-label">Clave</label>
+                                    <input id="clave" name="clave" class="form-control" required>
+                                </div>
+
+                                <div class="col-md-4">
+                                    <label class="form-label">Tipo</label>
+                                    <input id="tipo" name="tipo" class="form-control" required>
+                                </div>
+
+                                <div class="col-md-4">
+                                    <label class="form-label">Monto</label>
+                                    <input id="monto" name="monto" type="number" class="form-control" required>
+                                </div>
+
+                                <div class="col-12">
+                                    <label class="form-label">Descripción</label>
+                                    <textarea id="descripcion" name="descripcion" class="form-control" rows="3"></textarea>
+                                </div>
+
+                                <div class="col-md-6">
+                                    <label class="form-label">CURP del Cliente</label>
+                                    <select id="cliente" name="cliente" class="form-select" required>
+                                        <option value="">Seleccione...</option>
+
+                                        <option th:each="c : ${clientes}"
+                                                th:value="${c.curp}"
+                                                th:text="${c.curp + ' - ' + c.nombres + ' ' + c.primerApellido}">
+                                        </option>
+                                    </select>
+                                </div>
+
+                            </div>
+
+                        </div>
+
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
+                                Cancelar
+                            </button>
+
+                            <button id="btnGuardar" type="submit" class="btn btn-primary">
+                                <i class="fas fa-save"></i> Guardar
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
     </div>
 </div>
+
+
+
+
+<!-- ==================================== -->
+<!--        JAVASCRIPT PARA EL MODAL       -->
+<!-- ==================================== -->
+<script th:src="@{https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js}"></script>
+
+<script>
+    const modal = new bootstrap.Modal(document.getElementById('modalPoliza'));
+
+    // ============================
+    // MODAL PARA CREAR
+    // ============================
+    function abrirModalCrear() {
+        document.getElementById('tituloModal').innerText = "Nueva Póliza";
+        document.getElementById('btnGuardar').innerHTML = '<i class="fas fa-save"></i> Crear';
+
+        // limpiar campos
+        document.getElementById('clave').value = "";
+        document.getElementById('tipo').value = "";
+        document.getElementById('monto').value = "";
+        document.getElementById('descripcion').value = "";
+        document.getElementById('cliente').value = "";
+
+        // acción del formulario (crear)
+        document.getElementById('formPoliza').action = "/polizas/crear";
+
+        modal.show();
+    }
+
+
+    // ============================
+    // MODAL PARA EDITAR
+    // ============================
+    function editarPoliza(row) {
+
+        const clave = row.dataset.clave;
+        const tipo = row.dataset.tipo;
+        const monto = row.dataset.monto;
+        const descripcion = row.dataset.descripcion;
+        const curp = row.dataset.curp;
+
+        // poner titulo y boton
+        document.getElementById('tituloModal').innerText = "Editar Póliza";
+        document.getElementById('btnGuardar').innerHTML = '<i class="fas fa-edit"></i> Actualizar';
+
+        // llenar datos
+        document.getElementById('clave').value = clave;
+        document.getElementById('tipo').value = tipo;
+        document.getElementById('monto').value = monto;
+        document.getElementById('descripcion').value = descripcion;
+        document.getElementById('cliente').value = curp;
+
+        // acción del formulario (editar)
+        document.getElementById('formPoliza').action = "/polizas/actualizar/" + clave;
+
+        modal.show();
+    }
+
+</script>
 
 </html>

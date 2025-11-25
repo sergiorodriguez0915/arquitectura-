@@ -1,6 +1,5 @@
 package mx.edu.uacm.is.slt.as.sistpolizas.controller.web;
 
-import mx.edu.uacm.is.slt.as.sistpolizas.model.Cliente;
 import mx.edu.uacm.is.slt.as.sistpolizas.model.Poliza;
 import mx.edu.uacm.is.slt.as.sistpolizas.service.ClienteService;
 import mx.edu.uacm.is.slt.as.sistpolizas.service.PolizaService;
@@ -8,6 +7,8 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.UUID;
 
 @Controller
@@ -17,59 +18,70 @@ public class PolizaWebController {
     private final PolizaService polizaService;
     private final ClienteService clienteService;
 
-    public PolizaWebController(PolizaService polizaService,
-                               ClienteService clienteService) {
+    public PolizaWebController(PolizaService polizaService, ClienteService clienteService) {
         this.polizaService = polizaService;
         this.clienteService = clienteService;
     }
 
+    // ======================
+    // Listar y buscar pólizas
+    // ======================
     @GetMapping
-    public String list(Model model) {
-        model.addAttribute("polizas", polizaService.getAllPolizas());
+    public String list(@RequestParam(required = false) String clave,
+                       @RequestParam(required = false) String curp,
+                       @RequestParam(required = false) String nombre,
+                       @RequestParam(required = false) String tipo,
+                       @RequestParam(required = false) String beneficiario,
+                       @RequestParam(required = false) String fechaNacBenef,
+                       @RequestParam(required = false) Integer pagina,
+                       @RequestParam(required = false) Integer tam,
+                       Model model) {
+
+        List<Poliza> polizas = polizaService.buscarPolizas(
+                clave, curp, nombre, tipo,
+                beneficiario, fechaNacBenef, pagina, tam
+        );
+
+        if (polizas == null) polizas = new ArrayList<>();
+
+        model.addAttribute("polizas", polizas);
+        model.addAttribute("clientes", clienteService.listarClientes());
         model.addAttribute("title", "Pólizas");
+        model.addAttribute("nuevaPoliza", new Poliza());
         return "polizas";
     }
 
-    @GetMapping("/nuevo")
-    public String nuevoForm(Model model) {
-        model.addAttribute("poliza", new Poliza());
-        model.addAttribute("clientes", clienteService.listarClientes());
-        return "poliza-form";
-    }
-
+    // ======================
+    // Crear póliza
+    // ======================
     @PostMapping("/crear")
-    public String crear(@ModelAttribute Poliza poliza) {
-        polizaService.crearPoliza(
-                poliza.getClave(),
-                poliza.getTipo(),
-                poliza.getMonto(),
-                poliza.getDescripcion(),
-                poliza.getCliente().getCurp() // CURP del cliente seleccionado
-        );
+    public String crear(@ModelAttribute("nuevaPoliza") Poliza poliza) {
+        if (poliza.getClave() == null) poliza.setClave(UUID.randomUUID());
+        polizaService.guardarPoliza(poliza);
         return "redirect:/web/polizas";
     }
 
-    @GetMapping("/editar/{clave}")
-    public String editarForm(@PathVariable UUID clave, Model model) {
-        model.addAttribute("poliza", polizaService.getPorClave(clave));
-        model.addAttribute("clientes", clienteService.listarClientes());
-        return "poliza-form";
-    }
-
+    // ======================
+    // Editar póliza
+    // ======================
     @PostMapping("/actualizar")
     public String actualizar(@ModelAttribute Poliza poliza) {
-        polizaService.actualizarPoliza(
-                poliza.getClave(),
-                poliza.getTipo(),
-                poliza.getMonto(),
-                poliza.getDescripcion(),
-                poliza.getCliente().getCurp()
-        );
+        Poliza existente = polizaService.obtenerPorClave(poliza.getClave());
+        if (existente != null) {
+            existente.setTipo(poliza.getTipo());
+            existente.setDescripcion(poliza.getDescripcion());
+            existente.setMonto(poliza.getMonto());
+            existente.setCliente(poliza.getCliente());
+            polizaService.guardarPoliza(existente); // guardar cambios
+        }
         return "redirect:/web/polizas";
     }
 
-    @PostMapping("/borrar/{clave}")
-    public String borrar(@PathVariable UUID clave) {
+    // ======================
+    // Eliminar póliza
+    // ======================
+    @PostMapping("/borrar")
+    public String borrar(@RequestParam UUID clave) {
         polizaService.borrarPorClave(clave);
         return "redirect:/web/polizas";
     }
