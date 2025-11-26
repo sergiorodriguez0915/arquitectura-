@@ -1,5 +1,6 @@
 package mx.edu.uacm.is.slt.as.sistpolizas.model;
 
+import jakarta.persistence.Column;
 import jakarta.persistence.Embeddable;
 
 import java.io.Serializable;
@@ -10,30 +11,32 @@ import java.util.UUID;
 @Embeddable
 public class IdBeneficiarioPoliza implements Serializable {
 
-    private String curp;           // NECESARIO para identificar beneficiario
-    private UUID clavePoliza;      // Clave de la póliza (asociación)
+    private static final long serialVersionUID = 1L;
 
+    // FK que pertenece a la clave compuesta
+    @Column(name = "clave_poliza")
+    private UUID clavePoliza;
+
+    // Datos que identifican al beneficiario dentro de la póliza
+    @Column(name = "nombres")
     private String nombres;
+
+    @Column(name = "primer_apellido")
     private String primerApellido;
+
+    @Column(name = "segundo_apellido")
     private String segundoApellido;
+
+    @Column(name = "fecha_nacimiento")
     private Date fechaNacimiento;
 
     public IdBeneficiarioPoliza() {}
 
-    /** Constructor mínimo requerido por los Services */
-    public IdBeneficiarioPoliza(String curp, UUID clavePoliza) {
-        this.curp = curp;
-        this.clavePoliza = clavePoliza;
-    }
-
-    /** Constructor completo opcional (si se requiere) */
-    public IdBeneficiarioPoliza(String curp,
-                                UUID clavePoliza,
+    public IdBeneficiarioPoliza(UUID clavePoliza,
                                 String nombres,
                                 String primerApellido,
                                 String segundoApellido,
                                 Date fechaNacimiento) {
-
         this.clavePoliza = clavePoliza;
         this.nombres = nombres;
         this.primerApellido = primerApellido;
@@ -41,85 +44,48 @@ public class IdBeneficiarioPoliza implements Serializable {
         this.fechaNacimiento = fechaNacimiento;
     }
 
-    /* ==========================
-            GETTERS / SETTERS
-       ========================== */
+    // Getters y setters
+    public UUID getClavePoliza() { return clavePoliza; }
+    public void setClavePoliza(UUID clavePoliza) { this.clavePoliza = clavePoliza; }
 
-    public String getCurp() {
-        return curp;
-    }
+    public String getNombres() { return nombres; }
+    public void setNombres(String nombres) { this.nombres = nombres; }
 
-    public void setCurp(String curp) {
-        this.curp = curp;
-    }
+    public String getPrimerApellido() { return primerApellido; }
+    public void setPrimerApellido(String primerApellido) { this.primerApellido = primerApellido; }
 
-    public UUID getClavePoliza() {
-        return clavePoliza;
-    }
+    public String getSegundoApellido() { return segundoApellido; }
+    public void setSegundoApellido(String segundoApellido) { this.segundoApellido = segundoApellido; }
 
-    public void setClavePoliza(UUID clavePoliza) {
-        this.clavePoliza = clavePoliza;
-    }
+    public Date getFechaNacimiento() { return fechaNacimiento; }
+    public void setFechaNacimiento(Date fechaNacimiento) { this.fechaNacimiento = fechaNacimiento; }
 
-    public String getNombres() {
-        return nombres;
-    }
-
-    public void setNombres(String nombres) {
-        this.nombres = nombres;
-    }
-
-    public String getPrimerApellido() {
-        return primerApellido;
-    }
-
-    public void setPrimerApellido(String primerApellido) {
-        this.primerApellido = primerApellido;
-    }
-
-    public String getSegundoApellido() {
-        return segundoApellido;
-    }
-
-    public void setSegundoApellido(String segundoApellido) {
-        this.segundoApellido = segundoApellido;
-    }
-
-    public Date getFechaNacimiento() {
-        return fechaNacimiento;
-    }
-
-    public void setFechaNacimiento(Date fechaNacimiento) {
-        this.fechaNacimiento = fechaNacimiento;
-    }
-
-    /* ==========================
-           equals / hashCode
-       ========================== */
-
+    // equals y hashCode basados en todos los campos
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (!(o instanceof IdBeneficiarioPoliza)) return false;
         IdBeneficiarioPoliza that = (IdBeneficiarioPoliza) o;
-        return Objects.equals(curp, that.curp) &&
-                Objects.equals(clavePoliza, that.clavePoliza);
+        return Objects.equals(clavePoliza, that.clavePoliza) &&
+                Objects.equals(nombres, that.nombres) &&
+                Objects.equals(primerApellido, that.primerApellido) &&
+                Objects.equals(segundoApellido, that.segundoApellido) &&
+                Objects.equals(fechaNacimiento, that.fechaNacimiento);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(curp, clavePoliza);
+        return Objects.hash(clavePoliza, nombres, primerApellido, segundoApellido, fechaNacimiento);
     }
 
     @Override
     public String toString() {
-        return "IdBeneficiarioPoliza(" +
-                "curp='" + curp + '\'' +
-                ", clavePoliza=" + clavePoliza +
+        return "IdBeneficiarioPoliza{" +
+                "clavePoliza=" + clavePoliza +
                 ", nombres='" + nombres + '\'' +
                 ", primerApellido='" + primerApellido + '\'' +
                 ", segundoApellido='" + segundoApellido + '\'' +
                 ", fechaNacimiento=" + fechaNacimiento +
-                ')';
+                '}';
     }
 }

@@ -20,24 +20,32 @@ public class PolizaController {
         this.polizaService = polizaService;
     }
 
-    // ==========================================
-    // Ver todas / búsqueda con filtros
-    // ==========================================
+
     @GetMapping
     public String verPolizas(@RequestParam(required = false) String clave,
                              @RequestParam(required = false) String curp,
                              @RequestParam(required = false) String nombre,
                              @RequestParam(required = false) String tipo,
+                             @RequestParam(required = false) String nombreBenef,
+                             @RequestParam(required = false) String fechaNacBenef,
+                             @RequestParam(required = false, defaultValue = "0") Integer pagina,
+                             @RequestParam(required = false, defaultValue = "50") Integer tam,
                              Model model) {
 
-        List<Poliza> polizas = polizaService.buscarPolizas(clave, curp, nombre, tipo, null, null, 0, 50);
+        List<Poliza> polizas = polizaService.buscarPolizas(
+                clave, curp, nombre, tipo,
+                nombreBenef, fechaNacBenef,
+                pagina, tam
+        );
+
         model.addAttribute("polizas", polizas);
+
+        model.addAttribute("clave", clave);
+
         return "polizas";
     }
 
-    // ==========================================
-    // Eliminar póliza
-    // ==========================================
+
     @PostMapping("/eliminar")
     public String eliminarPoliza(@RequestParam String clave,
                                  RedirectAttributes redirectAttributes) {
