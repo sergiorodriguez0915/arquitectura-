@@ -13,4 +13,7 @@ public interface ClienteRepository extends JpaRepository<Cliente, String> {
             String primerApellido,
             String segundoApellido
     );
+
+    Optional<Cliente> findByCurp(String curp);
+
 }

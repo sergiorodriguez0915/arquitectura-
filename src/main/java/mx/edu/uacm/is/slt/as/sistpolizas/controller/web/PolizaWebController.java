@@ -1,14 +1,18 @@
 package mx.edu.uacm.is.slt.as.sistpolizas.controller.web;
 
+import mx.edu.uacm.is.slt.as.sistpolizas.model.Cliente;
 import mx.edu.uacm.is.slt.as.sistpolizas.model.Poliza;
+import mx.edu.uacm.is.slt.as.sistpolizas.repository.ClienteRepository;
 import mx.edu.uacm.is.slt.as.sistpolizas.service.ClienteService;
 import mx.edu.uacm.is.slt.as.sistpolizas.service.PolizaService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 import java.util.UUID;
 
 @Controller
@@ -17,6 +21,10 @@ public class PolizaWebController {
 
     private final PolizaService polizaService;
     private final ClienteService clienteService;
+
+    @Autowired
+    private ClienteRepository clienteRepositorio;
+
 
     public PolizaWebController(PolizaService polizaService, ClienteService clienteService) {
         this.polizaService = polizaService;
@@ -31,8 +39,6 @@ public class PolizaWebController {
             @RequestParam(required = false) String filtro,
             @RequestParam(required = false) String valor,
 
-            @RequestParam(required = false) String nombreBenef,
-            @RequestParam(required = false) String fechaNacBenef,
             @RequestParam(required = false, defaultValue = "0") Integer pagina,
             @RequestParam(required = false, defaultValue = "50") Integer tam,
             Model model) {
@@ -41,6 +47,8 @@ public class PolizaWebController {
         String curp = null;
         String nombre = null;
         String tipo = null;
+        String nombreBeneficiario = null;
+        String fechaN = null;
 
         if (valor != null && !valor.isBlank()) {
             switch (filtro) {
@@ -48,12 +56,14 @@ public class PolizaWebController {
                 case "curp": curp = valor; break;
                 case "nombre": nombre = valor; break;
                 case "tipo": tipo = valor; break;
+                case "nombreBeneficiario": nombreBeneficiario = valor; break;
+                case "fechaN": fechaN = valor; break;
             }
         }
 
         List<Poliza> polizas = polizaService.buscarPolizas(
                 clave, curp, nombre, tipo,
-                nombreBenef, fechaNacBenef, pagina, tam
+                nombreBeneficiario, fechaN, pagina, tam
         );
 
         if (polizas == null) polizas = new ArrayList<>();
@@ -71,13 +81,22 @@ public class PolizaWebController {
 
 
     @PostMapping("/crear")
-    public String crear(@ModelAttribute("nuevaPoliza") Poliza poliza) {
-        if (poliza.getClave() == null) poliza.setClave(UUID.randomUUID());
+    public String crear(@ModelAttribute("nuevaPoliza") Poliza poliza,
+                        @RequestParam("cliente") String curpCliente) {
 
-        polizaService.crearPoliza(poliza, null);
+        if (poliza.getClave() == null) {
+            poliza.setClave(UUID.randomUUID());
+        }
+
+        // Buscar el cliente por CURP
+        clienteRepositorio.findByCurp(curpCliente).ifPresent(poliza::setCliente);
+
+        polizaService.crearPoliza(poliza, null); // Beneficiarios los puedes pasar si los manejas en el form
 
         return "redirect:/web/polizas";
     }
+
+
 
 
     @PostMapping("/actualizar")

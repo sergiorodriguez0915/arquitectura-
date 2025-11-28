@@ -69,7 +69,7 @@ public class PolizaService {
         return poliza;
     }
 
-    public List<Poliza> buscarPolizas(String clave, String curp, String nombre, String tipo,
+    /*public List<Poliza> buscarPolizas(String clave, String curp, String nombre, String tipo,
                                       String nombreBenef, String fechaNacBenef,
                                       Integer pagina, Integer tam) {
 
@@ -89,7 +89,57 @@ public class PolizaService {
                 .collect(Collectors.toList());
 
         return paginar(filtradas, pagina != null ? pagina : 0, tam != null ? tam : 50);
+    }*/
+
+    public List<Poliza> buscarPolizas(String clave, String curp, String nombre, String tipo,
+                                      String nombreBenef, String fechaNacBenef,
+                                      Integer pagina, Integer tam) {
+
+        // 1. Obtener pólizas locales
+        List<Poliza> polizasLocales = polizaRepository.findAll();
+
+        // 2. Obtener pólizas remotas y enriquecer con Cliente
+        List<Poliza> polizasRemotas = fetchPolizasRemotas();
+
+        // 3. Unir ambas listas
+        List<Poliza> todas = new ArrayList<>();
+        todas.addAll(polizasLocales);
+        todas.addAll(polizasRemotas);
+
+        // 4. Parsear fecha del beneficiario
+        Date fechaBenef = parseFecha(fechaNacBenef);
+
+        // 5. Parsear clave UUID
+        UUID claveTemp = null;
+        try {
+            if (clave != null && !clave.isBlank()) {
+                claveTemp = UUID.fromString(clave);
+            }
+        } catch (IllegalArgumentException ignored) {}
+        final UUID  claveUUID = claveTemp;
+
+        // 6. Filtrar por los campos solicitados
+        List<Poliza> filtradas = todas.stream()
+                .filter(p -> p.getCliente() != null) // ahora todas deberían tener cliente
+                .filter(p -> claveUUID == null || (p.getClave() != null && p.getClave().equals(claveUUID)))
+                .filter(p -> curp == null || (p.getCliente().getCurp() != null && curp.equalsIgnoreCase(p.getCliente().getCurp())))
+                .filter(p -> nombre == null ||
+                        ((p.getCliente().getNombres() != null && p.getCliente().getNombres().toLowerCase().contains(nombre.toLowerCase())) ||
+                                (p.getCliente().getPrimerApellido() != null && p.getCliente().getPrimerApellido().toLowerCase().contains(nombre.toLowerCase())) ||
+                                (p.getCliente().getSegundoApellido() != null && p.getCliente().getSegundoApellido().toLowerCase().contains(nombre.toLowerCase()))))
+                .filter(p -> tipo == null || (p.getTipo() != null && p.getTipo().equalsIgnoreCase(tipo)))
+                .filter(p -> nombreBenef == null || p.getBeneficiarios().stream()
+                        .anyMatch(b -> b.getId().getNombres() != null &&
+                                b.getId().getNombres().toLowerCase().contains(nombreBenef.toLowerCase())))
+                .filter(p -> fechaBenef == null || p.getBeneficiarios().stream()
+                        .anyMatch(b -> b.getId().getFechaNacimiento() != null &&
+                                b.getId().getFechaNacimiento().equals(fechaBenef)))
+                .collect(Collectors.toList());
+
+        // 7. Devolver paginadas
+        return paginar(filtradas, pagina != null ? pagina : 0, tam != null ? tam : 50);
     }
+
 
 
     @Transactional
@@ -167,7 +217,7 @@ public class PolizaService {
 
     private Cliente fetchClienteRemoto(String curp) {
         // RUTA: http://nachintoch.mx:8080/clientes/{curp}
-        String url = API_REMOTA + "/clientes/" + curp;
+        String url = API_REMOTA + "/cliente/" + curp;
         try {
             return restTemplate.getForObject(url, Cliente.class);
         } catch (RestClientException e) {

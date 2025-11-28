@@ -26,6 +26,8 @@
                             <option value="curp" th:selected="${filtro == 'curp'}">CURP</option>
                             <option value="nombre" th:selected="${filtro == 'nombre'}">Nombre completo</option>
                             <option value="tipo" th:selected="${filtro == 'tipo'}">Tipo</option>
+                            <option value="nombreBeneficiario" th:selected="${filtro == 'nombreBeneficiario'}">Nombre del beneficiario</option>
+                            <option value="fechaN" th:selected="${filtro == 'fechaN'}">fecha de nacimiento del beneficiario</option>
                         </select>
                     </div>
 
@@ -152,6 +154,33 @@
 
                         </div>
 
+                        <hr>
+                        <div class="modal-header bg-primary text-white">
+                            <h5 id="subTituloModal" class="modal-title">Beneficiarios</h5>
+                        </div>
+                        <div id="beneficiarios">
+                            <div class="beneficiario row g-2 mb-2">
+                                <div class="col-md-3">
+                                    <input name="beneficiarios[0].nombres" class="form-control" placeholder="Nombres" required>
+                                </div>
+                                <div class="col-md-3">
+                                    <input name="beneficiarios[0].primerApellido" class="form-control" placeholder="Primer Apellido" required>
+                                </div>
+                                <div class="col-md-3">
+                                    <input name="beneficiarios[0].segundoApellido" class="form-control" placeholder="Segundo Apellido">
+                                </div>
+                                <div class="col-md-3">
+                                    <input type="date" name="beneficiarios[0].fechaNacimiento" class="form-control" required>
+                                </div>
+                                <div class="col-md-2">
+                                    <input type="number" name="beneficiarios[0].porcentaje" class="form-control" placeholder="%" required>
+                                </div>
+                            </div>
+                        </div>
+
+                        <button type="button" class="btn btn-sm btn-success" onclick="agregarBeneficiario()">+ Agregar otro</button>
+                        <hr>
+
                         <div class="modal-footer">
                             <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
                                 Cancelar
@@ -173,6 +202,7 @@
 
 <script>
     const modal = new bootstrap.Modal(document.getElementById('modalPoliza'));
+    let beneficiarioIndex = 1;
 
     function abrirModalCrear() {
         document.getElementById('tituloModal').innerText = "Nueva Póliza";
@@ -213,6 +243,36 @@
         document.getElementById('formPoliza').action = "/web/polizas/actualizar"; // POST a /web/polizas/actualizar
 
         modal.show();
+    }
+
+
+
+    function agregarBeneficiario() {
+        const container = document.getElementById("beneficiarios");
+
+        const nuevo = document.createElement("div");
+        nuevo.classList.add("beneficiario", "row", "g-2", "mb-2");
+
+        nuevo.innerHTML = `
+        <div class="col-md-3">
+            <input name="beneficiarios[${beneficiarioIndex}].nombres" class="form-control" placeholder="Nombres" required>
+        </div>
+        <div class="col-md-3">
+            <input name="beneficiarios[${beneficiarioIndex}].primerApellido" class="form-control" placeholder="Primer Apellido" required>
+        </div>
+        <div class="col-md-3">
+            <input name="beneficiarios[${beneficiarioIndex}].segundoApellido" class="form-control" placeholder="Segundo Apellido">
+        </div>
+        <div class="col-md-3">
+            <input type="date" name="beneficiarios[${beneficiarioIndex}].fechaNacimiento" class="form-control" required>
+        </div>
+        <div class="col-md-2">
+            <input type="number" name="beneficiarios[${beneficiarioIndex}].porcentaje" class="form-control" placeholder="%" required>
+        </div>
+    `;
+
+        container.appendChild(nuevo);
+        beneficiarioIndex++;
     }
 
 </script>

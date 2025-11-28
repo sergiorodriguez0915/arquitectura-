@@ -31,12 +31,11 @@
                 <!-- Selector de Cliente -->
                 <div class="form-outline mb-4">
                     <label class="form-label" for="cliente">Cliente</label>
-                    <select th:field="*{cliente.curp}" id="cliente" class="form-control" required>
+                    <select id="cliente" name="curpCliente" class="form-select" required>
                         <option value="">-- Seleccione un cliente --</option>
                         <th:block th:each="c : ${clientes}">
                             <option th:value="${c.curp}"
-                                    th:text="${c.nombres} + ' ' + ${c.primerApellido} + ' ' + ${c.segundoApellido}"
-                                    th:selected="${poliza.cliente != null} ? ${poliza.cliente.curp} == ${c.curp} : false">
+                                    th:text="${c.nombres} + ' ' + ${c.primerApellido} + ' ' + ${c.segundoApellido}">
                             </option>
                         </th:block>
                     </select>
