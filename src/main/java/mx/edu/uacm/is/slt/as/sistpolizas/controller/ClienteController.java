@@ -2,9 +2,14 @@ package mx.edu.uacm.is.slt.as.sistpolizas.controller;
 
 import mx.edu.uacm.is.slt.as.sistpolizas.model.Cliente;
 import mx.edu.uacm.is.slt.as.sistpolizas.model.Poliza;
+import mx.edu.uacm.is.slt.as.sistpolizas.model.Cliente;
 import mx.edu.uacm.is.slt.as.sistpolizas.repository.ClienteRepository;
+import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.client.RestClient;
+
+import java.util.List;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -44,6 +49,24 @@ public class ClienteController {
                 .orElse(ResponseEntity.notFound().build());
     }
 
+    @GetMapping("/clientes/copiar")
+    public List<Cliente> copiarClientesLocal() {
+        RestClient restClient = RestClient.create("http://nachintoch.mx:8080");
+
+        //Traer clientes del sistema remoto
+        List<Cliente> clientes = restClient.get()
+                .uri("/clientes", new Object[]{})            //End point remoto o del sistema dueño
+                .retrieve()
+                .body(new ParameterizedTypeReference<>(){});
+
+        // Guardar cada cliente en la base local
+        for (Cliente cliente : clientes) {
+            clienteRepository.save(cliente);
+        }
+
+        //Devuelve la lista guardada
+        return clientes;
+    }
     //Servicio REST  POST
     @PostMapping(value = {"/cliente/{curp}/{direccion}/{fecha_nacimiento}/{nombre}/{p_apellido}/{s_apellido}",
             "/cliente/{curp}/{direccion}/{fecha_nacimiento}/{nombre}/{p_apellido}"})

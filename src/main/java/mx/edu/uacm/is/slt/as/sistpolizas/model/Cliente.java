@@ -56,9 +56,12 @@ public class Cliente {
     public void setSegundoApellido(String sApellido) {
         this.segundoApellido = sApellido;
     }
+
+
     public String getDireccion() {
         return direccion;
     }
+
     public void setDireccion(String direccion) {
         this.direccion = direccion;
     }
@@ -66,6 +69,7 @@ public class Cliente {
     public String getCurp() {
         return curp;
     }
+
     public void setCurp(String curp) {
         this.curp = curp;
     }
@@ -99,3 +103,4 @@ public class Cliente {
         return String.format("Cliente(%s, %s, %s, %s, %s, %s)", nombres, primerApellido, segundoApellido,direccion,curp, fechaNacimiento);
     }
 }
+

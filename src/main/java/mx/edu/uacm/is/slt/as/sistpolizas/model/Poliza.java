@@ -16,6 +16,7 @@ public class Poliza {
     private String tipo;
     private String descripcion;
     private double monto;
+    //private String curpCliente;
 
     @ManyToOne(optional = false)
     @JoinColumn(name = "curp_cliente", nullable = false)
