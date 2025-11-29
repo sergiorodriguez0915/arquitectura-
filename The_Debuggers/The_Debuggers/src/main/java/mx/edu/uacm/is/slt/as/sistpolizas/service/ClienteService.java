@@ -25,9 +25,7 @@ public class ClienteService {
         this.clienteRepository = clienteRepository;
     }
 
-    // ============================================================
-    // OBTENER CLIENTES DEL SISTEMA DUEÑO (REMOTO)
-    // ============================================================
+
     public List<Cliente> obtenerClientesSistemaDueno() {
 
         try {
@@ -56,9 +54,7 @@ public class ClienteService {
         }
     }
 
-    // ============================================================
-    // CONSULTAR CLIENTE
-    // ============================================================
+
     public Cliente obtenerCliente(String curp) {
 
         // 1. Buscar local
@@ -88,9 +84,7 @@ public class ClienteService {
         }
     }
 
-    // ============================================================
-    // CREAR CLIENTE
-    // ============================================================
+
     public Cliente crearCliente(String curp,
                                 String direccion,
                                 String fechaNacimientoStr,
