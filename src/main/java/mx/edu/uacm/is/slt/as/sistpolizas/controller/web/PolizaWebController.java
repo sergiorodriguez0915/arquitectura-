@@ -61,7 +61,7 @@ public class PolizaWebController {
         model.addAttribute("polizas", polizas);
         model.addAttribute("clientes", clienteService.listarClientes());
         model.addAttribute("title", "Pólizas");
-        model.addAttribute("nuevaPoliza", new Poliza());
+        model.addAttribute("Poliza", new Poliza());
 
         model.addAttribute("filtro", filtro);
         model.addAttribute("valor", valor);
@@ -69,10 +69,18 @@ public class PolizaWebController {
         return "polizas";
     }
 
-
+    //lo cambie
     @PostMapping("/crear")
-    public String crear(@ModelAttribute("nuevaPoliza") Poliza poliza) {
-        if (poliza.getClave() == null) poliza.setClave(UUID.randomUUID());
+    public String crear(@ModelAttribute("Poliza") Poliza poliza) {
+
+        if (poliza.getClave() == null)
+            poliza.setClave(UUID.randomUUID());
+
+        // ⚠ RECONSTRUIR CLIENTE DESDE EL FORMULARIO (solo trae curp)
+        if (poliza.getCliente() != null && poliza.getCliente().getCurp() != null) {
+            String curp = poliza.getCliente().getCurp();
+            poliza.setCliente(clienteService.obtenerCliente(curp));
+        }
 
         polizaService.crearPoliza(poliza, null);
 
@@ -81,7 +89,8 @@ public class PolizaWebController {
 
 
     @PostMapping("/actualizar")
-    public String actualizar(@ModelAttribute Poliza poliza) {
+    public String actualizar(@ModelAttribute("poliza") Poliza poliza) {
+
         Poliza existente = polizaService.buscarPolizas(
                 poliza.getClave().toString(),
                 null, null, null,
@@ -89,15 +98,24 @@ public class PolizaWebController {
         ).stream().findFirst().orElse(null);
 
         if (existente != null) {
+
             existente.setTipo(poliza.getTipo());
             existente.setDescripcion(poliza.getDescripcion());
             existente.setMonto(poliza.getMonto());
-            existente.setCliente(poliza.getCliente());
 
-            polizaService.actualizarPoliza(existente, null); // null si no hay beneficiarios por ahora
+            // RECONSTRUIR CLIENTE A PARTIR DE LA CURP RECIBIDA
+            if (poliza.getCliente() != null && poliza.getCliente().getCurp() != null) {
+                existente.setCliente(
+                        clienteService.obtenerCliente(poliza.getCliente().getCurp())
+                );
+            }
+
+            polizaService.actualizarPoliza(existente, null);
         }
+
         return "redirect:/web/polizas";
     }
+
 
 
     @PostMapping("/borrar")

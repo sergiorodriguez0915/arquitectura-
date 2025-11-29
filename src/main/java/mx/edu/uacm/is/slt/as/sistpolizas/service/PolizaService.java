@@ -73,6 +73,8 @@ public class PolizaService {
                                       String nombreBenef, String fechaNacBenef,
                                       Integer pagina, Integer tam) {
 
+
+
         List<Poliza> polizasLocales = polizaRepository.findAll();
         List<Poliza> polizasRemotas = fetchPolizasRemotas(); // Llama a la ruta base /polizas
 

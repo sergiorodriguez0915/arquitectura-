@@ -6,16 +6,15 @@
   <component name="ChangeListManager">
     <list default="true" id="b6ed333a-8ca9-4237-a1e9-e51ad8bb9732" name="Changes" comment="Merge remote-tracking branch 'origin/developer' into developer">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/mx/edu/uacm/is/slt/as/sistpolizas/controller/PolizaController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/mx/edu/uacm/is/slt/as/sistpolizas/controller/PolizaController.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/mx/edu/uacm/is/slt/as/sistpolizas/controller/web/BeneficiarioWebController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/mx/edu/uacm/is/slt/as/sistpolizas/controller/web/BeneficiarioWebController.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/mx/edu/uacm/is/slt/as/sistpolizas/controller/web/PolizaWebController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/mx/edu/uacm/is/slt/as/sistpolizas/controller/web/PolizaWebController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/mx/edu/uacm/is/slt/as/sistpolizas/model/Beneficiario.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/mx/edu/uacm/is/slt/as/sistpolizas/model/Beneficiario.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/mx/edu/uacm/is/slt/as/sistpolizas/model/IdBeneficiarioPoliza.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/mx/edu/uacm/is/slt/as/sistpolizas/model/IdBeneficiarioPoliza.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/mx/edu/uacm/is/slt/as/sistpolizas/model/Poliza.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/mx/edu/uacm/is/slt/as/sistpolizas/model/Poliza.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/mx/edu/uacm/is/slt/as/sistpolizas/service/BeneficiarioService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/mx/edu/uacm/is/slt/as/sistpolizas/service/BeneficiarioService.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/mx/edu/uacm/is/slt/as/sistpolizas/service/PolizaService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/mx/edu/uacm/is/slt/as/sistpolizas/service/PolizaService.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/application.properties" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/application.properties" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/resources/templates/polizas.html" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/templates/polizas.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/application.properties" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/application.properties" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/target/classes/mx/edu/uacm/is/slt/as/sistpolizas/controller/web/PolizaWebController.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/mx/edu/uacm/is/slt/as/sistpolizas/controller/web/PolizaWebController.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/mx/edu/uacm/is/slt/as/sistpolizas/service/PolizaService.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/mx/edu/uacm/is/slt/as/sistpolizas/service/PolizaService.class" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/target/classes/templates/polizas.html" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/templates/polizas.html" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -167,7 +166,9 @@
       <workItem from="1763799732123" duration="9186000" />
       <workItem from="1763874598055" duration="38573000" />
       <workItem from="1764065751462" duration="469000" />
-      <workItem from="1764101810408" duration="38961000" />
+      <workItem from="1764101810408" duration="39136000" />
+      <workItem from="1764305084090" duration="17688000" />
+      <workItem from="1764365068519" duration="20039000" />
     </task>
     <task id="LOCAL-00001" summary="se agrega paquete modelo">
       <option name="closed" value="true" />
