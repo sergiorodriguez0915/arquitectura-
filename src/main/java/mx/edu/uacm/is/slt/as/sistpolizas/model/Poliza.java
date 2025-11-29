@@ -17,6 +17,9 @@ public class Poliza {
     private String descripcion;
     private double monto;
 
+    @Column(name = "curp_cliente", insertable = false, updatable = false)
+    private String curpCliente;
+
     @ManyToOne(optional = false)
     @JoinColumn(name = "curp_cliente", nullable = false)
     private Cliente cliente;
@@ -27,13 +30,21 @@ public class Poliza {
 
     public Poliza() {
     }
-
+    // PARA SISTEMA CLIENTE
     public Poliza(UUID clave, String tipo, String descripcion, double monto, Cliente cliente) {
         this.clave = clave;
         this.tipo = tipo;
         this.descripcion = descripcion;
         this.monto = monto;
         this.cliente = cliente;
+    }
+    // PARA SISTEMA DUEÑO
+    public Poliza(UUID clave, String tipo, String descripcion, double monto, String curpCliente) {
+        this.clave = clave;
+        this.tipo = tipo;
+        this.descripcion = descripcion;
+        this.monto = monto;
+        this.curpCliente = curpCliente;
     }
 
     public UUID getClave() { return clave; }
@@ -56,6 +67,13 @@ public class Poliza {
     }
     public void setBeneficiarios(List<Beneficiario> beneficiarios) {
         this.beneficiarios = beneficiarios;
+    }
+
+    public String getCurpCliente() {
+        return curpCliente;
+    }
+    public void setCurpCliente(String curpCliente) {
+        this.curpCliente = curpCliente;
     }
 
     @Override

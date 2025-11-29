@@ -77,7 +77,45 @@ public class PolizaService {
         List<Poliza> polizasRemotas = fetchPolizasRemotas(); // Llama a la ruta base /polizas
 
         Map<UUID, Poliza> mapa = new HashMap<>();
-        polizasRemotas.forEach(p -> mapa.putIfAbsent(p.getClave(), p));
+        Map<String, Cliente> cacheClientes = new HashMap<>(); // Cache para evitar llamadas duplicadas
+
+        polizasRemotas.forEach(p -> {
+            // paso 1) p.getCurpCliente - Obtener el CURP del cliente desde la póliza remota
+            String curpCliente = p.getCurpCliente();
+
+            // Solo procesar si tenemos un CURP válido
+            if (curpCliente != null && !curpCliente.trim().isEmpty()) {
+                // paso 2) preguntar al dueño por el cliente con esa curp
+                Cliente clienteCompleto = cacheClientes.get(curpCliente);
+
+                // Si no está en cache, hacer la consulta al sistema remoto
+                if (clienteCompleto == null) {
+                    try {
+                        clienteCompleto = fetchClienteRemoto(curpCliente);
+                        if (clienteCompleto != null) {
+                            // Guardar en cache para reutilizar
+                            cacheClientes.put(curpCliente, clienteCompleto);
+                            System.out.println("[INFO] Cliente obtenido y cacheado: " + curpCliente);
+                        }
+                    } catch (Exception e) {
+                        System.err.println("[ERROR] No se pudo obtener cliente para CURP: " + curpCliente + " - " + e.getMessage());
+                    }
+                }
+
+                // paso 3) p.setCliente que nos regresa el dueño
+                if (clienteCompleto != null) {
+                    p.setCliente(clienteCompleto);
+                    System.out.println("[INFO] Póliza " + p.getClave() + " enriquecida con cliente: " + curpCliente);
+                } else {
+                    System.err.println("[WARNING] No se pudo obtener cliente para CURP: " + curpCliente + " en póliza: " + p.getClave());
+                }
+            } else {
+                System.err.println("[WARNING] Póliza " + p.getClave() + " no tiene CURP de cliente válido");
+            }
+
+            mapa.putIfAbsent(p.getClave(), p);
+        });
+
         polizasLocales.forEach(p -> mapa.put(p.getClave(), p));
 
         List<Poliza> todas = new ArrayList<>(mapa.values());
@@ -167,7 +205,7 @@ public class PolizaService {
 
     private Cliente fetchClienteRemoto(String curp) {
         // RUTA: http://nachintoch.mx:8080/clientes/{curp}
-        String url = API_REMOTA + "/clientes/" + curp;
+        String url = API_REMOTA + "/cliente/" + curp;
         try {
             return restTemplate.getForObject(url, Cliente.class);
         } catch (RestClientException e) {
