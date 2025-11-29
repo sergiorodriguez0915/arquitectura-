@@ -3,10 +3,13 @@ package mx.edu.uacm.is.slt.as.sistpolizas.controller.web;
 import mx.edu.uacm.is.slt.as.sistpolizas.model.Beneficiario;
 import mx.edu.uacm.is.slt.as.sistpolizas.service.BeneficiarioService;
 import mx.edu.uacm.is.slt.as.sistpolizas.service.PolizaService;
+import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.Date;
+import java.util.List;
 import java.util.UUID;
 
 @Controller
@@ -22,100 +25,77 @@ public class BeneficiarioWebController {
         this.polizaService = polizaService;
     }
 
-    // ================================
+    // ==============================
     // Listar todos los beneficiarios
-    // ================================
+    // ==============================
     @GetMapping
     public String list(Model model) {
-        model.addAttribute("beneficiarios", beneficiarioService.obtenerTodos());
+        List<Beneficiario> todos = beneficiarioService.obtenerTodos();
+        model.addAttribute("beneficiarios", todos);
         model.addAttribute("title", "Beneficiarios");
-        return "beneficiarios"; // no "fragments/layout"
+        return "beneficiarios";
     }
 
-    // ====================================
-    // Formulario para crear nuevo beneficiario
-    // ====================================
+    // ==============================
+    // Formulario nuevo beneficiario
+    // ==============================
     @GetMapping("/nuevo")
     public String nuevoForm(Model model) {
         model.addAttribute("beneficiario", new Beneficiario());
-        model.addAttribute("polizas", polizaService.getAllPolizas());
+        model.addAttribute("polizas", polizaService.buscarPolizas(null, null, null, null, null, null, 0, 20));
         model.addAttribute("title", "Nuevo Beneficiario");
-        return "beneficiario-form"; // no "fragments/layout"
+        return "beneficiario-form";
     }
 
-
-    // ================================
-    // Guardar nuevo beneficiario
-    // ================================
+    // ==============================
+    // Crear beneficiario
+    // ==============================
     @PostMapping("/crear")
-    public String crear(@RequestParam String fechaNacimiento,
-                        @RequestParam UUID clavePoliza,
+    public String crear(@RequestParam UUID clavePoliza,
                         @RequestParam String nombres,
                         @RequestParam String primerApellido,
                         @RequestParam(required = false) String segundoApellido,
+                        @RequestParam @DateTimeFormat(pattern = "yyyy-MM-dd") Date fechaNacimiento,
                         @RequestParam int porcentaje) {
 
-        beneficiarioService.crearBeneficiario(
-                fechaNacimiento,
-                clavePoliza,
-                nombres,
-                primerApellido,
-                segundoApellido,
-                porcentaje
-        );
-
+        beneficiarioService.crearBeneficiario(clavePoliza, nombres, primerApellido, segundoApellido, fechaNacimiento, porcentaje);
         return "redirect:/web/beneficiarios";
     }
 
-    // ====================================
+    // ==============================
     // Formulario para editar beneficiario
-    // ====================================
-    @GetMapping("/editar/{id}/{p}")
-    public String editarForm(@PathVariable String id,
-                             @PathVariable UUID p,
+    // ==============================
+    @GetMapping("/editar/{clavePoliza}/{nombres}/{primerApellido}/{segundoApellido}/{fecha}")
+    public String editarForm(@PathVariable UUID clavePoliza,
+                             @PathVariable String nombres,
+                             @PathVariable String primerApellido,
+                             @PathVariable String segundoApellido,
+                             @PathVariable @DateTimeFormat(pattern = "yyyy-MM-dd") Date fecha,
                              Model model) {
 
-        Beneficiario beneficiario = beneficiarioService.obtenerPorId(id, p)
+        Beneficiario b = beneficiarioService.obtenerPorId(clavePoliza, nombres, primerApellido, segundoApellido, fecha)
                 .orElseThrow(() -> new IllegalArgumentException("Beneficiario no encontrado"));
 
-        model.addAttribute("beneficiario", beneficiario);
-        model.addAttribute("polizas", polizaService.getAllPolizas());
-        model.addAttribute("contentFragment", "beneficiario-form :: beneficiarioFormContent");
+        model.addAttribute("beneficiario", b);
+        model.addAttribute("polizas", polizaService.buscarPolizas(null, null, null, null, null, null, 0, 20));
         model.addAttribute("title", "Editar Beneficiario");
-
-        return "fragments/layout";
+        return "beneficiario-form";
     }
 
-    // ================================
+    // ==============================
     // Actualizar beneficiario
-    // ================================
+    // ==============================
     @PostMapping("/actualizar")
-    public String actualizar(@RequestParam String curp,
-                             @RequestParam UUID clavePoliza,
+    public String actualizar(@RequestParam UUID clavePoliza,
                              @RequestParam String nombres,
                              @RequestParam String primerApellido,
                              @RequestParam(required = false) String segundoApellido,
+                             @RequestParam @DateTimeFormat(pattern = "yyyy-MM-dd") Date fechaNacimiento,
                              @RequestParam int porcentaje) {
 
-        beneficiarioService.actualizarBeneficiario(
-                curp,
-                clavePoliza,
-                nombres,
-                primerApellido,
-                segundoApellido,
-                porcentaje
-        );
-
+        beneficiarioService.actualizarBeneficiario(clavePoliza, nombres, primerApellido, segundoApellido, fechaNacimiento, porcentaje);
         return "redirect:/web/beneficiarios";
     }
 
-    // ================================
-    // Eliminar beneficiario
-    // ================================
-    @GetMapping("/eliminar/{id}/{p}")
-    public String eliminar(@PathVariable String id,
-                           @PathVariable UUID p) {
-        beneficiarioService.borrarBeneficiario(id, p);
-        return "redirect:/web/beneficiarios";
-    }
+
 }

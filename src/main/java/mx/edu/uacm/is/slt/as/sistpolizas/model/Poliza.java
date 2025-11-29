@@ -1,6 +1,9 @@
 package mx.edu.uacm.is.slt.as.sistpolizas.model;
 
 import jakarta.persistence.*;
+
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Objects;
 import java.util.UUID;
 
@@ -17,6 +20,10 @@ public class Poliza {
     @ManyToOne(optional = false)
     @JoinColumn(name = "curp_cliente", nullable = false)
     private Cliente cliente;
+
+    @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
+    @JoinColumn(name = "clave_poliza")
+    private List<Beneficiario> beneficiarios = new ArrayList<>();
 
     public Poliza() {
     }
@@ -43,6 +50,13 @@ public class Poliza {
 
     public Cliente getCliente() { return cliente; }
     public void setCliente(Cliente cliente) { this.cliente = cliente; }
+
+    public List<Beneficiario> getBeneficiarios() {
+        return beneficiarios;
+    }
+    public void setBeneficiarios(List<Beneficiario> beneficiarios) {
+        this.beneficiarios = beneficiarios;
+    }
 
     @Override
     public boolean equals(Object o) {

@@ -20,48 +20,32 @@ public class PolizaController {
         this.polizaService = polizaService;
     }
 
-    // ==========================================
-    // Redirección del formulario /polizas/buscar
-    // ==========================================
-    @GetMapping("/buscar")
-    public String buscar(@RequestParam String filtro,
-                         @RequestParam String valor) {
 
-        return "redirect:/polizas?filtro=" + filtro + "&valor=" + valor;
-    }
-
-    // ==========================================
-    // Ver todas / búsqueda con filtros
-    // ==========================================
     @GetMapping
-    public String verPolizas(@RequestParam(required = false) String filtro,
-                             @RequestParam(required = false) String valor,
+    public String verPolizas(@RequestParam(required = false) String clave,
+                             @RequestParam(required = false) String curp,
+                             @RequestParam(required = false) String nombre,
+                             @RequestParam(required = false) String tipo,
+                             @RequestParam(required = false) String nombreBenef,
+                             @RequestParam(required = false) String fechaNacBenef,
+                             @RequestParam(required = false, defaultValue = "0") Integer pagina,
+                             @RequestParam(required = false, defaultValue = "50") Integer tam,
                              Model model) {
 
-        List<Poliza> polizas;
-
-        if (filtro != null && valor != null && !valor.isEmpty()) {
-            switch (filtro) {
-                case "clave" -> polizas = polizaService.buscarPorClave(valor);
-                case "curp" -> polizas = polizaService.buscarPorCurp(valor);
-                case "nombre" -> polizas = polizaService.buscarPorNombre(valor);
-                case "tipo" -> polizas = polizaService.buscarPorTipo(valor);
-                default -> polizas = polizaService.listarPolizas();
-            }
-        } else {
-            polizas = polizaService.listarPolizas();
-        }
+        List<Poliza> polizas = polizaService.buscarPolizas(
+                clave, curp, nombre, tipo,
+                nombreBenef, fechaNacBenef,
+                pagina, tam
+        );
 
         model.addAttribute("polizas", polizas);
-        model.addAttribute("filtro", filtro);
-        model.addAttribute("valor", valor);
+
+        model.addAttribute("clave", clave);
 
         return "polizas";
     }
 
-    // ==========================================
-    // Eliminar póliza
-    // ==========================================
+
     @PostMapping("/eliminar")
     public String eliminarPoliza(@RequestParam String clave,
                                  RedirectAttributes redirectAttributes) {
