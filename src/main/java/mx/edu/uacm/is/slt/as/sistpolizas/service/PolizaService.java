@@ -26,11 +26,11 @@ public class PolizaService {
     private final RestTemplate restTemplate = new RestTemplate();
 
     // Los paths específicos (/polizas, /poliza, /clientes) se concatenan en los métodos.
-    private final String API_REMOTA = "http://nachintoch.mx:8080";
+    private final String API_REMOTA = "http://nachintoch.mx:8080";  // Base URL de la API remota
 
     private static final SimpleDateFormat DATE_FORMAT = new SimpleDateFormat("yyyy-MM-dd");
 
-    public PolizaService(PolizaRepository polizaRepository,
+    public PolizaService(PolizaRepository polizaRepository,  // Inyección de repositorios y servicios como dependencias
                          BeneficiarioRepository beneficiarioRepository,
                          ClienteService clienteService) {
         this.polizaRepository = polizaRepository;
@@ -38,30 +38,141 @@ public class PolizaService {
         this.clienteService = clienteService;
     }
 
+    // nuevo metodo para obtener todos los clientes (locales + remotos) consolidados
+    public List<Cliente> obtenerTodosLosClientes() {
+        // Obtener clientes locales
+        List<Cliente> clientesLocales = clienteService.listarClientes();
+
+        // Obtener clientes remotos de las pólizas
+        List<Cliente> clientesRemotos = obtenerClientesRemotosDePolizas();
+
+        // Combinar y eliminar duplicados por CURP
+        List<Cliente> todosClientes = new ArrayList<>(clientesLocales);
+        Set<String> curpsExistentes = clientesLocales.stream()
+                .map(Cliente::getCurp)
+                .collect(Collectors.toSet());
+
+        for (Cliente clienteRemoto : clientesRemotos) {
+            if (!curpsExistentes.contains(clienteRemoto.getCurp())) {
+                todosClientes.add(clienteRemoto);
+            }
+        }
+
+        // Ordenar por nombre para mejor experiencia en el dropdown!!
+        todosClientes.sort(Comparator.comparing(cliente ->
+                (cliente.getNombres() + " " + cliente.getPrimerApellido()).toLowerCase()
+        ));
+
+        System.out.println("[INFO] Total clientes consolidados: " + todosClientes.size() +
+                " (Locales: " + clientesLocales.size() +
+                ", Remotos: " + clientesRemotos.size() + ")");
+
+        return todosClientes;
+    }
+
+    // Metodo de apoyo para obtener clientes remotos desde las pólizas
+    private List<Cliente> obtenerClientesRemotosDePolizas() {
+        List<Poliza> polizasRemotas = fetchPolizasRemotas();
+        Set<String> curpsUnicos = new HashSet<>();
+        List<Cliente> clientesRemotos = new ArrayList<>();
+
+        for (Poliza poliza : polizasRemotas) {   // Iterar sobre pólizas remotas
+            String curp = poliza.getCurpCliente();  // Obtener CURP del cliente asociado a la póliza
+            if (curp != null && !curp.trim().isEmpty() && !curpsUnicos.contains(curp)) {   // Verificar unicidad de CURP
+                curpsUnicos.add(curp);
+
+                try {
+                    Cliente cliente = fetchClienteRemoto(curp);  // peticion fetch al sistema remoto
+                    if (cliente != null) {
+                        clientesRemotos.add(cliente);
+                        System.out.println("[SUCCESS] Cliente remoto agregado: " + curp);
+                    }
+                } catch (Exception e) {  // Manejo de errores
+                    System.err.println("[ERROR] No se pudo obtener cliente remoto: " + curp);
+                    // Crear cliente básico como fallback
+                    Cliente clienteBasico = new Cliente();
+                    clienteBasico.setCurp(curp);
+                    clienteBasico.setNombres("Cliente del Sistema Dueño");
+                    clienteBasico.setPrimerApellido("CURP: " + curp);
+                    clientesRemotos.add(clienteBasico);
+                }
+            }
+        }
+        return clientesRemotos;
+    }
+
+    // se agrega GETTER para acceder al ClienteService desde otros controladores
+    public ClienteService getClienteService() {
+        return clienteService;
+    }
 
     @Transactional
     public Poliza crearPoliza(Poliza poliza, List<Beneficiario> beneficiarios) {
         if (poliza.getClave() == null) poliza.setClave(UUID.randomUUID());
 
-        //  cliente
+        // Validar y establecer el cliente correctamente
         Cliente cliente = poliza.getCliente();
-        if (cliente != null && cliente.getCurp() != null) {
-            cliente = clienteService.existePorCurp(cliente.getCurp()) ?
-                    clienteService.obtenerCliente(cliente.getCurp()) :
-                    Optional.ofNullable(fetchClienteRemoto(cliente.getCurp())).orElse(cliente);
 
-            clienteService.crearCliente(cliente);
+        // Si el cliente viene nulo o sin CURP, pero tenemos curpCliente, usarla
+        if ((cliente == null || cliente.getCurp() == null) && poliza.getCurpCliente() != null) {
+            cliente = new Cliente();
+            cliente.setCurp(poliza.getCurpCliente());
             poliza.setCliente(cliente);
         }
 
+        if (cliente != null && cliente.getCurp() != null) {  // Asegurarse de tener CURP que es obligatorio
+            System.out.println("[INFO] Procesando cliente con CURP: " + cliente.getCurp());
+
+            // Buscar o crear el cliente
+            Cliente clienteExistente = null;
+            if (clienteService.existePorCurp(cliente.getCurp())) {
+                clienteExistente = clienteService.obtenerCliente(cliente.getCurp());
+                System.out.println("[INFO] Cliente encontrado en BD local: " + cliente.getCurp());
+            } else {
+                // Intentar obtener del sistema remoto
+                clienteExistente = fetchClienteRemoto(cliente.getCurp());
+                if (clienteExistente != null) {
+                    System.out.println("[INFO] Cliente obtenido del sistema remoto: " + cliente.getCurp());
+                } else {
+                    // Si no existe en remoto, usar el cliente que viene del formulario
+                    clienteExistente = cliente;
+                    System.out.println("[INFO] Usando cliente del formulario: " + cliente.getCurp());
+                }
+            }
+
+            // Asegurar que el cliente tenga datos básicos
+            if (clienteExistente.getNombres() == null) {
+                clienteExistente.setNombres("Cliente");
+            }
+            if (clienteExistente.getPrimerApellido() == null) {
+                clienteExistente.setPrimerApellido("CURP: " + clienteExistente.getCurp());
+            }
+
+            // Guardar el cliente en la base de datos local
+            clienteService.crearCliente(clienteExistente);
+            poliza.setCliente(clienteExistente);
+
+            System.out.println("[SUCCESS] Cliente establecido en póliza: " + clienteExistente.getCurp());
+        } else {
+            throw new RuntimeException("No se puede crear póliza sin cliente válido. CURP: " +
+                    (cliente != null ? cliente.getCurp() : "null"));
+        }
+
         // Guardar local
+        System.out.println("[INFO] Guardando póliza local con clave: " + poliza.getClave());
         polizaRepository.save(poliza);
-        guardarBeneficiariosLocal(poliza.getClave(), beneficiarios);
+
+        if (beneficiarios != null && !beneficiarios.isEmpty()) {
+            guardarBeneficiariosLocal(poliza.getClave(), beneficiarios);
+        }
 
         // Guardar remoto
         try {
             postPolizaRemota(poliza);
-            if (beneficiarios != null) beneficiarios.forEach(b -> postBeneficiarioRemoto(poliza.getClave(), b));
+            if (beneficiarios != null) {
+                beneficiarios.forEach(b -> postBeneficiarioRemoto(poliza.getClave(), b));
+            }
+            System.out.println("[SUCCESS] Póliza guardada en sistema remoto: " + poliza.getClave());
         } catch (RestClientException e) {
             System.err.println("[REMOTE ERROR] No se pudo enviar la póliza o beneficiarios a remoto: " + e.getMessage());
         }
@@ -129,7 +240,6 @@ public class PolizaService {
         return paginar(filtradas, pagina != null ? pagina : 0, tam != null ? tam : 50);
     }
 
-
     @Transactional
     public void actualizarPoliza(Poliza poliza, List<Beneficiario> beneficiarios) {
         if (poliza.getClave() == null)
@@ -175,7 +285,6 @@ public class PolizaService {
         polizaRepository.deleteById(clave);
     }
 
-
     private void guardarBeneficiariosLocal(UUID clavePoliza, List<Beneficiario> beneficiarios) {
         if (beneficiarios == null) return;
         beneficiarios.forEach(b -> {
@@ -203,8 +312,8 @@ public class PolizaService {
         }
     }
 
-    private Cliente fetchClienteRemoto(String curp) {
-        // RUTA: http://nachintoch.mx:8080/clientes/{curp}
+    public Cliente fetchClienteRemoto(String curp) {
+        // Se ha cambiado el endpoint /cliente/ en lugar de /clientes/
         String url = API_REMOTA + "/cliente/" + curp;
         try {
             return restTemplate.getForObject(url, Cliente.class);

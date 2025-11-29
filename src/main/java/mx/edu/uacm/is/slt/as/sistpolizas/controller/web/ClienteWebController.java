@@ -1,61 +1,40 @@
 package mx.edu.uacm.is.slt.as.sistpolizas.controller.web;
 
 import mx.edu.uacm.is.slt.as.sistpolizas.model.Cliente;
-import mx.edu.uacm.is.slt.as.sistpolizas.service.ClienteService;
-import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
+import mx.edu.uacm.is.slt.as.sistpolizas.service.PolizaService;
 import org.springframework.web.bind.annotation.*;
 
-@Controller
-@RequestMapping("/web/clientes")
+import java.util.List;
+
+@RestController
+@RequestMapping("/api/clientes")
 public class ClienteWebController {
 
-    private final ClienteService clienteService;
+    private final PolizaService polizaService;
 
-    public ClienteWebController(ClienteService clienteService) {
-        this.clienteService = clienteService;
+    public ClienteWebController(PolizaService polizaService) {  // Inyección de dependencia de PolizaService
+        this.polizaService = polizaService;
     }
 
+    // endpoint para obtener todos los clientes (locales + remotos)
     @GetMapping
-    public String list(Model model) {
-
-        // 🔥 1. Obtener y sincronizar clientes desde el sistema dueño
-        clienteService.obtenerClientesSistemaDueno();
-
-        // 🔥 2. Ya sincronizados, los obtienes de tu BD local
-        model.addAttribute("title", "Clientes");
-        model.addAttribute("clientes", clienteService.listarClientes());
-
-        return "clientes";
+    public List<Cliente> obtenerTodosLosClientes() {
+        return polizaService.obtenerTodosLosClientes();
     }
 
+    @GetMapping("/{curp}")
+    public Cliente obtenerClientePorCurp(@PathVariable String curp) { // nuevo endpoint para buscar por CURP
+        // Primero intentar con el sistema dueño
+        try {
+            Cliente clienteRemoto = polizaService.fetchClienteRemoto(curp);
+            if (clienteRemoto != null) {
+                return clienteRemoto;
+            }
+        } catch (Exception e) {
+            System.err.println("[ERROR] No se pudo obtener cliente remoto: " + curp);
+        }
 
-    @GetMapping("/nuevo")
-    public String nuevoForm(Model model) {
-        model.addAttribute("cliente", new Cliente());
-        return "cliente-form";
-    }
-
-    @PostMapping("/crear")
-    public String crear(@ModelAttribute Cliente cliente,
-                        @RequestParam String fechaNacimiento) {
-
-        clienteService.crearCliente(
-                cliente.getCurp(),
-                cliente.getDireccion(),
-                fechaNacimiento,
-                cliente.getNombres(),
-                cliente.getPrimerApellido(),
-                cliente.getSegundoApellido()
-        );
-
-        return "redirect:/web/clientes";
-    }
-
-    @GetMapping("/buscar")
-    public String buscarPorCurp(@RequestParam String curp, Model model) {
-        model.addAttribute("clienteEncontrado", clienteService.obtenerCliente(curp));
-        model.addAttribute("clientes", clienteService.listarClientes());
-        return "clientes";
+        // Si no existe en remoto, buscar en local
+        return polizaService.getClienteService().obtenerCliente(curp);
     }
 }
