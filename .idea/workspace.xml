@@ -4,7 +4,19 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="b6ed333a-8ca9-4237-a1e9-e51ad8bb9732" name="Changes" comment="Merge remote-tracking branch 'origin/developer' into developer" />
+    <list default="true" id="b6ed333a-8ca9-4237-a1e9-e51ad8bb9732" name="Changes" comment="Merge remote-tracking branch 'origin/developer' into developer">
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/mx/edu/uacm/is/slt/as/sistpolizas/controller/web/ClienteWebController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/mx/edu/uacm/is/slt/as/sistpolizas/controller/web/ClienteWebController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/mx/edu/uacm/is/slt/as/sistpolizas/controller/web/PolizaWebController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/mx/edu/uacm/is/slt/as/sistpolizas/controller/web/PolizaWebController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/mx/edu/uacm/is/slt/as/sistpolizas/model/Poliza.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/mx/edu/uacm/is/slt/as/sistpolizas/model/Poliza.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/mx/edu/uacm/is/slt/as/sistpolizas/service/PolizaService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/mx/edu/uacm/is/slt/as/sistpolizas/service/PolizaService.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/templates/polizas.html" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/templates/polizas.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/mx/edu/uacm/is/slt/as/sistpolizas/controller/web/ClienteWebController.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/mx/edu/uacm/is/slt/as/sistpolizas/controller/web/ClienteWebController.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/mx/edu/uacm/is/slt/as/sistpolizas/controller/web/PolizaWebController.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/mx/edu/uacm/is/slt/as/sistpolizas/controller/web/PolizaWebController.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/mx/edu/uacm/is/slt/as/sistpolizas/model/Poliza.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/mx/edu/uacm/is/slt/as/sistpolizas/model/Poliza.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/mx/edu/uacm/is/slt/as/sistpolizas/service/PolizaService.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/mx/edu/uacm/is/slt/as/sistpolizas/service/PolizaService.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/templates/polizas.html" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/templates/polizas.html" afterDir="false" />
+    </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -71,14 +83,17 @@
     "RunOnceActivity.git.unshallow": "true",
     "Spring Boot.SistemaPolizasApplication.executor": "Run",
     "dart.analysis.tool.window.visible": "false",
-    "git-widget-placeholder": "developer",
+    "git-widget-placeholder": "RicardoHernandez",
     "kotlin-language-version-configured": "true",
-    "last_opened_file_path": "C:/Users/Sergio Rodriguez/Downloads/beneficiario/src/main/resources/templates",
+    "last_opened_file_path": "C:/Users/HP/Desktop/POLIZAS - copia/proyecto",
     "node.js.detected.package.eslint": "true",
     "node.js.detected.package.tslint": "true",
     "node.js.selected.package.eslint": "(autodetect)",
     "node.js.selected.package.tslint": "(autodetect)",
     "nodejs_package_manager_path": "npm",
+    "project.structure.last.edited": "Project",
+    "project.structure.proportion": "0.0",
+    "project.structure.side.proportion": "0.0",
     "run.code.analysis.last.selected.profile": "pProject Default",
     "vue.rearranger.settings.migration": "true"
   },
@@ -132,8 +147,8 @@
   <component name="SharedIndexes">
     <attachedChunks>
       <set>
-        <option value="bundled-jdk-9823dce3aa75-bf35d07a577b-intellij.indexing.shared.core-IU-252.26199.169" />
-        <option value="bundled-js-predefined-d6986cc7102b-9c94529fcfe0-JavaScript-IU-252.26199.169" />
+        <option value="bundled-jdk-9823dce3aa75-bf35d07a577b-intellij.indexing.shared.core-IU-252.27397.103" />
+        <option value="bundled-js-predefined-d6986cc7102b-3aa1da707db6-JavaScript-IU-252.27397.103" />
       </set>
     </attachedChunks>
   </component>
@@ -154,9 +169,9 @@
       <workItem from="1763799732123" duration="9186000" />
       <workItem from="1763874598055" duration="38573000" />
       <workItem from="1764065751462" duration="469000" />
-      <workItem from="1764101810408" duration="39136000" />
-      <workItem from="1764305084090" duration="17688000" />
-      <workItem from="1764365068519" duration="20039000" />
+      <workItem from="1764101810408" duration="38961000" />
+      <workItem from="1764367560261" duration="16297000" />
+      <workItem from="1764393758628" duration="12106000" />
     </task>
     <task id="LOCAL-00001" summary="se agrega paquete modelo">
       <option name="closed" value="true" />
@@ -193,5 +208,13 @@
     <MESSAGE value="se agrega paquete modelo" />
     <MESSAGE value="Merge remote-tracking branch 'origin/developer' into developer" />
     <option name="LAST_COMMIT_MESSAGE" value="Merge remote-tracking branch 'origin/developer' into developer" />
+  </component>
+  <component name="github-copilot-workspace">
+    <instructionFileLocations>
+      <option value=".github/instructions" />
+    </instructionFileLocations>
+    <promptFileLocations>
+      <option value=".github/prompts" />
+    </promptFileLocations>
   </component>
 </project>

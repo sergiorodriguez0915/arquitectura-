@@ -29,15 +29,18 @@ public class Poliza {
     private List<Beneficiario> beneficiarios = new ArrayList<>();
 
     public Poliza() {
+        this.cliente = new Cliente(); // inicializar cliente para evitar null
     }
+
     // PARA SISTEMA CLIENTE
     public Poliza(UUID clave, String tipo, String descripcion, double monto, Cliente cliente) {
         this.clave = clave;
         this.tipo = tipo;
         this.descripcion = descripcion;
         this.monto = monto;
-        this.cliente = cliente;
+        this.cliente = cliente != null ? cliente : new Cliente();
     }
+
     // PARA SISTEMA DUEÑO
     public Poliza(UUID clave, String tipo, String descripcion, double monto, String curpCliente) {
         this.clave = clave;
@@ -45,6 +48,10 @@ public class Poliza {
         this.descripcion = descripcion;
         this.monto = monto;
         this.curpCliente = curpCliente;
+        this.cliente = new Cliente(); // inicializar cliente para evitar null
+        if (curpCliente != null) {
+            this.cliente.setCurp(curpCliente);
+        }
     }
 
     public UUID getClave() { return clave; }
@@ -59,8 +66,16 @@ public class Poliza {
     public double getMonto() { return monto; }
     public void setMonto(double monto) { this.monto = monto; }
 
-    public Cliente getCliente() { return cliente; }
-    public void setCliente(Cliente cliente) { this.cliente = cliente; }
+    public Cliente getCliente() {
+        if (cliente == null) {
+            cliente = new Cliente(); // garantizar que nunca sea null
+        }
+        return cliente;
+    }
+
+    public void setCliente(Cliente cliente) {
+        this.cliente = cliente != null ? cliente : new Cliente();
+    }
 
     public List<Beneficiario> getBeneficiarios() {
         return beneficiarios;

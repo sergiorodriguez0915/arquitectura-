@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org">
+<html xmlns:th="http://www.thymeleaf.org"> // usamos Thymeleaf para plantillas
 <head>
 
     <link th:href="@{https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css}" rel="stylesheet">
@@ -14,7 +14,7 @@
     </style>
 </head>
 
-<div th:replace="fragments/layout :: layout(~{this :: content})">
+<div th:replace="fragments/layout :: layout(~{this :: content})"> // Usar el layout principal
 
     <div th:fragment="content" class="container mt-4">
 
@@ -164,16 +164,14 @@
 </div>
 
 
-<script th:src="@{https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js}"></script>
+<script th:src="@{https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js}"></script> // Bootstrap JS
 
 <script>
 
-    let filaSeleccionada = null;
-    const modal = new bootstrap.Modal(document.getElementById('modalPoliza'));
+    let filaSeleccionada = null;  // variable para almacenar la fila seleccionada
+    const modal = new bootstrap.Modal(document.getElementById('modalPoliza'));  // inicializar modal
 
-    /* ======================================
-       SELECCIONAR FILA
-    ====================================== */
+       // seleccionar fila de la tabla
     document.querySelectorAll("#tablaPolizas tbody tr").forEach(row => {
 
         row.addEventListener("click", () => {
@@ -188,9 +186,7 @@
         });
     });
 
-    /* ======================================
-       VALIDAR SI SE PUEDE EDITAR O ELIMINAR
-    ====================================== */
+       // validar botones mediante condicional para editar y eliminar
     function validarBotones() {
         const filtro = document.getElementById("selectFiltro").value;
 
@@ -213,27 +209,23 @@
     document.getElementById("selectFiltro").addEventListener("change", validarBotones);
 
 
-    /* ======================================
-       CREAR
-    ====================================== */
+       //crear nueva poliza
     function abrirModalCrear() {
         document.getElementById('tituloModal').innerText = "Nueva Póliza";
         document.getElementById('btnGuardar').innerHTML = '<i class="fas fa-save"></i> Crear';
 
-        document.getElementById('clave').value = "";
+        document.getElementById('clave').value = ""; // obtener los datos del formulario
         document.getElementById('tipo').value = "";
         document.getElementById('monto').value = "";
         document.getElementById('descripcion').value = "";
         document.getElementById('cliente').value = "";
 
-        document.getElementById('formPoliza').action = "/web/polizas/crear";
+        document.getElementById('formPoliza').action = "/web/polizas/crear"; // configurar la acción del formulario
 
         modal.show();
     }
 
-    /* ======================================
-       EDITAR GENERAL
-    ====================================== */
+       //editar solo por clave o curp
     function editarGeneral() {
         const filtro = document.getElementById("selectFiltro").value;
 
@@ -245,9 +237,7 @@
         editarPoliza(filaSeleccionada);
     }
 
-    /* ======================================
-       RELLENAR MODAL EDITAR
-    ====================================== */
+       //rellenar modal con datos de la poliza
     function editarPoliza(row) {
 
         const clave = row.dataset.clave;
@@ -270,9 +260,7 @@
         modal.show();
     }
 
-    /* ======================================
-       ELIMINAR GENERAL
-    ====================================== */
+      // eliminar solo por clave
     function eliminarGeneral() {
         const filtro = document.getElementById("selectFiltro").value;
 
@@ -291,7 +279,7 @@
         if (!confirm("¿Seguro que deseas eliminar la póliza con clave " + clave + "?"))
             return;
 
-        // Crear formulario invisible
+        // Crear formulario y enviarlo
         const form = document.createElement("form");
         form.method = "post";
         form.action = "/web/polizas/borrar";
